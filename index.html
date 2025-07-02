@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Peluncuran...</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        /* [BAGIAN 1: CSS UMUM & ANIMASI INTRO STABIL] */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        #intro-animation {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: linear-gradient(to top, #1c2833, #0b0c10 70%); /* Langit malam gelap */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* Animasi untuk fade out di akhir */
+            animation: sceneFadeOut 1.5s ease-out forwards;
+            animation-delay: 9.5s; /* Mulai fade out setelah 9.5 detik */
+        }
+
+        .launch-scene {
+            position: relative;
+            width: 100%; height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; /* Posisikan roket di bawah */
+            overflow: hidden;
+        }
+        
+        .launchpad {
+            position: absolute;
+            bottom: 0;
+            width: 100%; height: 15%;
+            background-color: #2c3e50;
+            border-top: 5px solid #7f8c8d;
+        }
+        
+        /* ROKET & ANIMASINYA */
+        .rocket {
+            /* Sesuaikan ukuran roket agar cocok dengan gambar baru */
+            width: 120px; /* Lebar gambar roket */
+            height: 120px; /* Tinggi gambar roket */
+            position: absolute;
+            bottom: 15%;
+            /* Animasi utama roket: diam, bergetar, lalu terbang */
+            animation: rocketSequence 10s ease-in-out forwards;
+        }
+
+        .rocket img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Pastikan gambar terlihat utuh */
+            display: block; /* Menghilangkan spasi ekstra di bawah gambar */
+        }
+
+        @keyframes rocketSequence {
+            0%  { transform: translateY(0); }
+            45% { transform: translateY(0); } /* Diam sampai detik 4.5 */
+            50% { transform: translate(0, -2px); } /* Mulai bergetar */
+            52% { transform: translate(2px, 2px); }
+            54% { transform: translate(-2px, -2px); }
+            56% { transform: translate(2px, 0); }
+            58% { transform: translateY(0); }
+            60% { transform: translateY(0); } /* Selesai bergetar di detik 6 */
+            100% { transform: translateY(-120vh) scale(1.2); } /* Terbang ke atas */
+        }
+
+        /* EFEK API & ASAP */
+        .flame {
+            position: absolute;
+            bottom: -80px; /* Sesuaikan posisi api agar di bawah gambar roket */
+            left: 50%;
+            width: 30px; height: 100px;
+            background: linear-gradient(to top, #f1c40f, #f39c12, transparent);
+            border-radius: 50% 50% 30% 30%;
+            transform: translateX(-50%) scale(0);
+            transform-origin: bottom center;
+            /* Animasi api: muncul dan berkedip-kedip */
+            animation: flameIgnition 5s ease-out forwards;
+            animation-delay: 5s; /* Mulai menyala di detik ke 5 */
+        }
+        @keyframes flameIgnition {
+            0%  { transform: translateX(-50%) scale(0); }
+            10% { transform: translateX(-50%) scale(1); }
+            20% { transform: translateX(-50%) scale(0.9); }
+            30% { transform: translateX(-50%) scale(1.1); }
+            100% { transform: translateX(-50%) scale(1.1); }
+        }
+
+        .smoke-plume {
+            position: absolute;
+            bottom: 0; left: 50%;
+            width: 50px; height: 50px;
+            background: #bdc3c7;
+            border-radius: 50%;
+            opacity: 0;
+            transform: translateX(-50%) scale(0);
+            /* Animasi asap: muncul dan membubung */
+            animation: billow 4s ease-out forwards;
+        }
+
+        @keyframes billow {
+            0%  { transform: translate(-50%, 0) scale(0); opacity: 0.7; }
+            100% { transform: translate(-50%, -300px) scale(20); opacity: 0; }
+        }
+        
+        /* Hitung Mundur */
+        .countdown-text {
+            position: absolute;
+            top: 15%; left: 50%;
+            transform: translateX(-50%);
+            font-size: 10vmin;
+            font-family: 'Orbitron', sans-serif; /* Font sci-fi */
+            color: #fff;
+            text-shadow: 0 0 20px #e74c3c;
+        }
+
+        /* Animasi fade out untuk scene intro */
+        @keyframes sceneFadeOut {
+            from { opacity: 1; }
+            to  { opacity: 0; }
+        }
+        
+        /* [BAGIAN 2: CSS HOMEPAGE] */
+        #homepage-content { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; color: #fff; opacity: 0; transition: opacity 2s ease-in-out; background-color: transparent; }
+        #homepage-content.visible { opacity: 1; }
+        #main-bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .profile-card { background: rgba(0, 0, 0, 0.5); padding: 40px; border-radius: 20px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.18); position: relative; z-index: 1; }
+        .profile-picture { width: 120px; height: 120px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; margin-bottom: 20px; }
+        .profile-name { margin: 0; font-size: 2em; } .profile-description { margin-top: 10px; } .social-links { margin-top: 30px; display: flex; flex-direction: column; gap: 15px; } .link-item { background-color: rgba(255, 255, 255, 0.1); color: #fff; text-decoration: none; padding: 15px; border-radius: 10px; transition: background-color 0.3s ease, transform 0.2s ease; } .link-item:hover { background-color: rgba(255, 255, 255, 0.3); transform: scale(1.05); }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="intro-animation">
+        <div class="launch-scene">
+            <div class="launchpad"></div>
+            <div class="rocket">
+                <img src="roket.png" alt="Roket">
+                <div class="flame"></div>
+            </div>
+            <div id="smoke-container"></div>
+            <div class="countdown-text" id="countdown-text"></div>
+        </div>
+    </div>
+
+    <div id="homepage-content">
+        <canvas id="main-bg-canvas"></canvas>
+        <div class="profile-card">
+            <img src="https://i.pravatar.cc/150?img=52" alt="Foto Profil" class="profile-picture">
+            <h1 class="profile-name">Nama Anda</h1>
+            <p class="profile-description">Misi Berhasil.</p>
+            <div class="social-links">
+                <a href="#" target="_blank" class="link-item"><i class="fab fa-github"></i> GitHub</a>
+                <a href="#" target="_blank" class="link-item"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="#" target="_blank" class="link-item"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const countdownText = document.getElementById('countdown-text');
+            const smokeContainer = document.getElementById('smoke-container');
+            const intro = document.getElementById('intro-animation');
+            const homepage = document.getElementById('homepage-content');
+
+            // --- Logika Hitung Mundur & Efek Asap ---
+            let count = 5;
+            countdownText.innerText = count;
+
+            const countdownInterval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownText.innerText = count;
+                } else {
+                    countdownText.innerText = 'LIFT OFF!';
+                    // Memicu asap saat Lift Off
+                    for (let i = 0; i < 50; i++) {
+                        const smoke = document.createElement('div');
+                        smoke.className = 'smoke-plume';
+                        // Atur posisi dan delay asap secara acak agar terlihat natural
+                        smoke.style.left = `${Math.random() * 100 - 50 + 50}%`;
+                        smoke.style.animationDelay = `${Math.random() * 1.5}s`;
+                        smokeContainer.appendChild(smoke);
+                    }
+                    setTimeout(() => countdownText.style.display = 'none', 1000); // Sembunyikan teks setelah lift off
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+
+            // --- Logika Transisi Halaman ---
+            // Mulai tampilkan homepage di detik ke-9
+            setTimeout(() => {
+                homepage.classList.add('visible');
+            }, 9000);
+
+            // Hapus elemen intro setelah semua animasi selesai
+            setTimeout(() => {
+                intro.remove();
+                document.body.style.overflow = 'auto';
+            }, 11000);
+        });
+
+        // --- SCRIPT BACKGROUND BINTANG (TIDAK BERUBAH) ---
+        function setupStarCanvas(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let stars = [];
+            for (let i = 0; i < 200; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.5 + 0.1
+                });
+            }
+            function animateStars() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'white';
+                stars.forEach(star => {
+                    star.y -= star.speed;
+                    if (star.y < 0) {
+                        star.y = canvas.height;
+                        star.x = Math.random() * canvas.width;
+                    }
+                    ctx.fillRect(star.x, star.y, star.size, star.size);
+                });
+                requestAnimationFrame(animateStars);
+            }
+            animateStars();
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+        setupStarCanvas('main-bg-canvas');
+    </script>
+</body>
+</html>
