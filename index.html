@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ali Portofolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* General Styling */
+        :root {
+            --blue-dominant: #003366; /* Biru dongker dominan */
+            --blue-dark: #001a33;    /* Biru dongker gelap */
+            --text-light: #f0f0f0;  /* Hampir putih */
+            --text-dark: #333;      /* Abu-abu gelap */
+            --bg-dark: #000;        /* Hitam pekat */
+            --link-color: #6a1b9a;  /* Ungu gelap */
+            --link-hover: #9c27b0;  /* Ungu lebih terang */
+            --border-color: #555;   /* Abu-abu untuk border */
+            --dark-blue-hover-social: #000080; /* Biru dongker khusus untuk hover ikon sosial */
+            --header-initial-height: 450px; /* Tinggi header awal yang lebih besar */
+            --nav-height: 60px; /* Tinggi menu navigasi atas */
+            --fade-start-scroll: 50px; /* Jarak scroll sebelum fade dimulai */
+            --fade-end-scroll: 300px; /* Jarak scroll saat fade selesai (gambar tidak terlihat) */
+        }
+
+        html {
+            scroll-behavior: smooth;
+            /* Offset untuk smooth scroll agar konten tidak tertutup oleh header sticky */
+            scroll-padding-top: var(--nav-height); 
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--link-color);
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--link-hover);
+        }
+
+        /* Header Section */
+        .profile-header {
+            position: relative; /* Ini penting agar .profile-background-visual bisa absolute di dalamnya */
+            width: 100%;
+            height: var(--header-initial-height); /* Tinggi header awal */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Konten di tengah vertikal */
+            align-items: center;
+            text-align: center;
+            color: var(--text-light);
+            padding: 40px 20px; /* Padding untuk konten dalam header */
+            box-sizing: border-box;
+            z-index: 50; /* Di bawah top-nav, di atas main-content */
+            background-color: transparent; /* Awalnya transparan agar background halaman terlihat */
+        }
+
+        /* Container untuk background image dan overlay di header */
+        .profile-background-visual {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--blue-dominant); /* Warna fallback jika gambar tidak dimuat */
+            overflow: hidden;
+            z-index: -1; /* Di belakang konten teks/gambar profil */
+        }
+
+        .profile-background-visual .background-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            filter: brightness(0.6) contrast(1.3); /* Sedikit gelap dan kontras */
+            opacity: 1; /* Opasitas awal */
+            transition: opacity 0.1s ease-out; /* Transisi untuk efek fade */
+        }
+
+        .profile-background-visual .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.1));
+            opacity: 1; /* Opasitas awal */
+            transition: opacity 0.1s ease-out; /* Transisi untuk efek fade */
+        }
+
+        /* Konten di dalam header (foto, nama, handle) */
+        .profile-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid var(--text-light);
+            object-fit: cover;
+            margin-bottom: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .profile-name {
+            font-size: 2.8em;
+            margin: 10px 0 5px 0;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .verified-badge {
+            color: #4CAF50;
+            margin-left: 10px;
+            font-size: 0.9em;
+        }
+
+        .profile-name .fas.fa-check-circle {
+            font-size: 0.9em;
+        }
+
+        .profile-handle {
+            font-size: 1.3em;
+            color: #aaa;
+            margin-top: 0;
+            min-height: 1.3em; /* Pastikan tinggi cukup untuk teks terpanjang */
+            transition: opacity 0.5s ease-in-out; /* Efek fade untuk animasi teks */
+        }
+
+        /* Top Right Navigation */
+        .top-nav {
+            position: fixed; /* Menempel di viewport */
+            top: 0; /* Di bagian paling atas */
+            left: 0; /* Membentang penuh */
+            width: 100%;
+            background-color: var(--bg-dark); /* Latar belakang menu */
+            padding: 0 20px; /* Padding horizontal */
+            box-sizing: border-box;
+            display: flex;
+            justify-content: flex-end; /* Rata kanan */
+            align-items: center;
+            height: var(--nav-height); /* Tinggi menu */
+            z-index: 1000; /* Pastikan di atas semua elemen lain */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Shadow tipis */
+        }
+
+        .top-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .top-nav ul li {
+            margin-left: var(--nav-item-spacing); /* Spasi antar item */
+        }
+
+        .top-nav ul li:first-child {
+            margin-left: 0;
+        }
+
+        .top-nav ul li a {
+            color: var(--text-light);
+            font-size: 1.1em;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .top-nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .top-nav ul li a.active {
+            background-color: var(--blue-dominant);
+            font-weight: bold;
+        }
+
+        /* Main Content Wrapper (Menampung main-content) */
+        .content-wrapper {
+            display: flex;
+            justify-content: center; /* Pusatkan konten utama */
+            padding: 20px; /* Padding di sekitar konten */
+            box-sizing: border-box;
+            margin-top: -100px; /* Menaikkan konten ke atas agar tidak ada gap besar dari header */
+            position: relative;
+            z-index: 10; /* Pastikan di atas footer, di bawah top-nav */
+        }
+
+        /* Main Content Area */
+        .main-content {
+            max-width: 800px;
+            width: 100%;
+            padding: 30px;
+            background-color: #111;
+            border-radius: 10px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Social Links Section */
+        .social-links-section {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            color: var(--text-light);
+            font-size: 2em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .social-icons a:hover {
+            background-color: var(--dark-blue-hover-social);
+            transform: translateY(-5px);
+        }
+
+        /* Section Styling */
+        .about-section {
+            text-align: left;
+            margin-bottom: 50px;
+        }
+
+        .about-section h2 {
+            font-size: 2.5em;
+            color: var(--blue-dominant);
+            margin-top: 0;
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .about-section h3 {
+            font-size: 1.8em;
+            color: var(--text-light);
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .about-section p, .about-section ul, .about-section li {
+            font-size: 1.15em;
+            color: #ccc;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .about-section strong {
+            color: var(--text-light);
+            font-weight: bold;
+        }
+
+        .link-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background-color: var(--blue-dominant);
+            color: var(--text-light);
+            padding: 15px 30px;
+            border-radius: 35px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
+            margin-top: 25px;
+        }
+
+        .link-button:hover {
+            background-color: var(--blue-dark);
+            transform: translateY(-3px);
+        }
+
+        /* Skill bars */
+        .skill-item {
+            margin-bottom: 20px;
+        }
+
+        .skill-item p {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #eee;
+        }
+
+        .skill-bar-container {
+            background-color: #333;
+            border-radius: 7px;
+            height: 12px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .skill-bar {
+            height: 100%;
+            border-radius: 7px;
+            text-align: right;
+            padding-right: 10px;
+            color: transparent;
+            font-size: 0.9em;
+        }
+
+        .skill-bar.skill-1 { background-color: #007bff; width: 90%; }
+        .skill-bar.skill-2 { background-color: #28a745; width: 50%; }
+        .skill-bar.skill-3 { background-color: #fd7e14; width: 80%; }
+        .skill-bar.skill-4 { background-color: #dc3545; width: 65%; }
+
+        /* Experience and Services Cards */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .card {
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 10px;
+            background-color: #1a1a1a;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .card.experience {
+            text-align: left;
+        }
+
+        .card-icon {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 7px;
+            margin: 0 auto 20px auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: var(--blue-dominant);
+        }
+
+        .card h3 {
+            font-size: 1.6em;
+            color: var(--text-light);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 1.1em;
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .card.experience p:first-child {
+            font-weight: bold;
+            color: var(--blue-dominant);
+            margin-bottom: 10px;
+        }
+
+        .card.experience h3 span {
+            font-weight: normal;
+            color: #888;
+        }
+
+        /* Footer */
+        .main-footer {
+            width: 100%;
+            background-color: var(--blue-dark);
+            color: #777;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.9em;
+            border-top: 1px solid #222;
+            z-index: 999; /* Pastikan di atas semua konten saat fixed jika diperlukan */
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .profile-header {
+                height: 400px;
+                padding: 30px 15px;
+            }
+            .profile-name {
+                font-size: 2.5em;
+            }
+            .profile-pic {
+                width: 130px;
+                height: 130px;
+            }
+            .top-nav {
+                height: var(--nav-height); /* Tetap tinggi navigasi */
+                padding: 0 15px;
+            }
+            .top-nav ul li {
+                margin-left: calc(var(--nav-item-spacing) / 1.5);
+            }
+            .top-nav ul li a {
+                font-size: 1em;
+                padding: 8px 12px;
+            }
+            .main-content {
+                padding: 25px;
+            }
+            .card-container {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --header-initial-height: 350px;
+                --nav-height: 50px;
+                --nav-item-spacing: 10px;
+            }
+            html {
+                scroll-padding-top: var(--nav-height);
+            }
+            .profile-header {
+                height: var(--header-initial-height);
+                padding: 20px 10px;
+            }
+            .profile-pic {
+                width: 100px;
+                height: 100px;
+            }
+            .profile-name {
+                font-size: 2em;
+            }
+            .profile-handle {
+                font-size: 1.1em;
+            }
+            .top-nav {
+                height: var(--nav-height);
+                padding: 0 10px;
+                justify-content: center; /* Pusatkan menu di mobile */
+            }
+            .top-nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .top-nav ul li {
+                margin-left: calc(var(--nav-item-spacing) / 2);
+                margin-bottom: 5px;
+            }
+            .top-nav ul li a {
+                font-size: 0.9em;
+                padding: 6px 10px;
+            }
+            .content-wrapper {
+                margin-top: -80px; /* Sesuaikan margin top untuk mobile */
+                padding: 10px;
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .social-icons a {
+                width: 50px;
+                height: 50px;
+                font-size: 1.6em;
+                gap: 15px;
+            }
+            .link-button {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+            .card-container {
+                grid-template-columns: 1fr; /* Satu kolom di mobile */
+                gap: 20px;
+            }
+            .about-section h2 {
+                font-size: 2em;
+            }
+            .about-section h3 {
+                font-size: 1.6em;
+            }
+            .about-section p, .about-section ul, .about-section li {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --header-initial-height: 300px;
+            }
+            .profile-header {
+                height: var(--header-initial-height);
+            }
+            .profile-pic {
+                width: 80px;
+                height: 80px;
+            }
+            .profile-name {
+                font-size: 1.8em;
+            }
+            .profile-handle {
+                font-size: 1em;
+            }
+            .top-nav ul li a {
+                font-size: 0.8em;
+                padding: 5px 8px;
+            }
+            .content-wrapper {
+                margin-top: -60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="top" class="profile-header">
+        <div class="profile-background-visual">
+            <img src="gifs.gif" alt="Header Background" class="background-img">
+            <div class="background-overlay"></div>
+        </div>
+        <div class="profile-content">
+            <img src="images.jpg" alt="Muhammad Ridho Ali Akbar" class="profile-pic">
+            <h1 class="profile-name">
+                Muhammad Ridho Ali Akbar 
+                <span class="verified-badge" title="Verified Account">
+                    <i class="fas fa-check-circle"></i> 
+                </span>
+            </h1>
+            <p class="profile-handle">IT Support</p> 
+        </div>
+    </header>
+
+    <nav class="top-nav">
+        <ul>
+            <li><a href="#top" aria-label="Go to Top">Home</a></li>
+            <li><a href="#about" aria-label="Go to About Me">About Me</a></li>
+            <li><a href="#services" aria-label="Go to Services">Services</a></li>
+            <li><a href="#experience" aria-label="Go to Experience">Experience</a></li>
+            <li><a href="#education" aria-label="Go to Education">Education</a></li>
+        </ul>
+    </nav>
+
+    <div class="content-wrapper">
+        <main class="main-content">
+            <section class="social-links-section">
+                <p style="font-size: 1.1em; margin-bottom: 15px; color: var(--blue-dominant);">Connect with me:</p>
+                <div class="social-icons">
+                    <a href="https://wa.me/6285173173716" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.instagram.com/galbiru" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/yourlinkedin" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="mailto:muhammadridhoaliakbar1@gmail.com" target="_blank" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+            </section>
+
+            <section id="about" class="about-section">
+                <h2>About Me</h2>
+                <p>I'm passionate about building something new, simple, always creating something that is best, good attitude, kind, communicative, diligent, tolerant, target oriented, discipline, honest, responsible and able to work individually or in a team.</p>
+                <a href="#" class="link-button"><i class="fas fa-download"></i> Download CV</a>
+
+                <h3 style="margin-top: 40px;">Skills</h3>
+                <div class="skill-item">
+                    <p><strong>Computer Issue Troubleshooting</strong></p>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar skill-1"></div>
+                    </div>
+                    <p style="text-align: right; margin-top: 5px; font-size: 0.9em; color: #aaa;">90%</p>
+                </div>
+                <div class="skill-item">
+                    <p><strong>Web Developer</strong></p>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar skill-2"></div>
+                    </div>
+                    <p style="text-align: right; margin-top: 5px; font-size: 0.9em; color: #aaa;">50%</p>
+                </div>
+                <div class="skill-item">
+                    <p><strong>Trainer Technician Computer</p>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar skill-3"></div>
+                    </div>
+                    <p style="text-align: right; margin-top: 5px; font-size: 0.9em; color: #aaa;">80%</p>
+                </div>
+                <div class="skill-item">
+                    <p><strong>Network Support & Troubleshooting</strong></p>
+                    <div class="skill-bar-container">
+                        <div class="skill-bar skill-4"></div>
+                    </div>
+                    <p style="text-align: right; margin-top: 5px; font-size: 0.9em; color: #aaa;">65%</p>
+                </div>
+            </section>
+
+            <section id="services" class="about-section">
+                <h2>Services</h2>
+                <div class="card-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-code"></i></div>
+                        <h3>Web Development</h3>
+                        <p>Implement designs made with the best programming languages, ensuring robust and scalable web applications.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-paint-brush"></i></div>
+                        <h3>UI/UX Design</h3>
+                        <p>Design intuitive and visually appealing user interfaces for exceptional user experience.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                        <h3>SEO Optimization</h3>
+                        <p>Maximize search engine visibility and drive organic traffic through effective SEO strategies.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <h3>Mobile App Development</h3>
+                        <p>Build native or cross-platform mobile applications for iOS and Android.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-database"></i></div>
+                        <h3>Database Management</h3>
+                        <p>Design, implement, and manage efficient and secure database systems.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="fas fa-cloud"></i></div>
+                        <h3>Cloud Solutions</h3>
+                        <p>Leverage cloud platforms for scalable and reliable infrastructure.</p>
+                    </div>
+                </div>
+                <p style="margin-top: 20px; text-align: center;">Looking for a custom job? <a href="https://wa.me/6285173173716" target="_blank" style="color: var(--link-color);">Click here</a> to contact me! <i class="fas fa-hand-wave"></i></p>
+            </section>
+
+            <section id="experience" class="about-section">
+                <h2>Experience</h2>
+                <div class="card-container" style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="card experience">
+                        <p style="font-weight: bold; color: var(--blue-dominant);">2024 - 2025</p>
+                        <h3>IT Executive<span style="font-weight: normal; color: #ccc;">• Acorn Consultant</span></h3>
+                        <p>Provided comprehensive IT support across network infrastructure, server management, hardware, software, and meticulous project documentation.</p>
+                    </div>
+                    <div class="card experience">
+                        <p style="font-weight: bold; color: var(--blue-dominant);">2019 - 2024</p>
+                        <h3>IT Support Specialist <span style="font-weight: normal; color: #ccc;">• PT Mitra Infoparama</span></h3>
+                        <p>Successfully enhanced activity reporting efficiency by 40% and reduced recurring technical issues by 60% through system development and a comprehensive troubleshooting framework, while simultaneously elevating technician competency via training, optimizing IT systems, and strategically collaborating with Lenovo for improved hardware reliability.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="education" class="about-section">
+                <h2>Education</h2>
+                <div class="card-container" style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="card experience">
+                        <p style="font-weight: bold; color: var(--blue-dominant);">2017 - 2021</p>
+                        <h3>Bachelor Degree, Information Systems <span style="font-weight: normal; color: #ccc;">• Universitas Indraprasta PGRI</span></h3>
+                        <p>Focused on understanding information systems, software development methodologies, and database management.</p>
+                    </div>
+                    <div class="card experience">
+                        <p style="font-weight: bold; color: var(--blue-dominant);">2012 - 2015</p>
+                        <h3>Computer Software Engineering <span style="font-weight: normal; color: #ccc;">• SMK Muhammadiyah 4 Jakarta</span></h3>
+                        <p>Vocational high school education specializing in computer software engineering, providing a strong foundation in programming and IT fundamentals.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="main-footer">
+        <p>Copyright &copy; 2025 by galbiru. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.main-content section');
+            const navLinks = document.querySelectorAll('.top-nav a'); // Menggunakan .top-nav
+            const headerElement = document.getElementById('top');
+            const backgroundImg = document.querySelector('.profile-background-visual .background-img');
+            const backgroundOverlay = document.querySelector('.profile-background-visual .background-overlay');
+            const profileHandle = document.querySelector('.profile-handle'); // Elemen untuk animasi teks
+            
+            // Teks yang akan dirotasi
+            const rotatingTexts = ["IT Support", "Web Developer", "Trainer", "Network Support & Troubleshooting"];
+            let currentTextIndex = 0;
+
+            // Mengambil nilai variabel CSS secara dinamis
+            const getCssVar = (varName) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(varName));
+            const fadeStartScroll = getCssVar('--fade-start-scroll');
+            const fadeEndScroll = getCssVar('--fade-end-scroll');
+            const navHeight = getCssVar('--nav-height'); // Tinggi navigasi atas
+
+            // Fungsi untuk menghitung offset scroll yang akurat
+            const getScrollOffset = () => {
+                // Offset utama adalah tinggi navigasi tetap
+                return navHeight; 
+            };
+
+            const setActiveLink = () => {
+                let currentActiveSectionId = null;
+                const scrollY = window.pageYOffset;
+                const offsetThreshold = getScrollOffset(); 
+
+                // Iterate in reverse to prioritize sections further down the page
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    const section = sections[i];
+                    const sectionTop = section.getBoundingClientRect().top + scrollY - offsetThreshold;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+
+                    // Tambahkan toleransi 1px agar transisi lebih mulus saat scrolling
+                    if (scrollY >= sectionTop - 1 && scrollY < sectionBottom - 1) {
+                        currentActiveSectionId = section.id;
+                        break;
+                    }
+                }
+                
+                // Special handling for "Home" (top of the page)
+                // Jika posisi scroll berada di atas section pertama
+                if (scrollY < sections[0].getBoundingClientRect().top + scrollY - offsetThreshold + 50) { 
+                    currentActiveSectionId = 'top';
+                }
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    const linkTargetId = link.getAttribute('href').substring(1); // Hapus '#'
+
+                    if (linkTargetId === currentActiveSectionId) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+
+            // Fungsi untuk efek fade background header
+            const handleHeaderScroll = () => {
+                const scrollY = window.pageYOffset;
+
+                // Hitung faktor opasitas berdasarkan posisi scroll
+                let opacityFactor = 1;
+                if (scrollY > fadeStartScroll) {
+                    opacityFactor = 1 - (scrollY - fadeStartScroll) / (fadeEndScroll - fadeStartScroll);
+                    if (opacityFactor < 0) opacityFactor = 0; // Pastikan opasitas tidak negatif
+                } else {
+                    opacityFactor = 1; // Kembali ke opasitas penuh jika di atas fadeStartScroll
+                }
+
+                backgroundImg.style.opacity = opacityFactor;
+                backgroundOverlay.style.opacity = opacityFactor;
+            };
+
+            // Fungsi untuk animasi teks dengan efek fade
+            const animateText = () => {
+                profileHandle.style.opacity = 0; // Mulai fade out
+                setTimeout(() => {
+                    currentTextIndex = (currentTextIndex + 1) % rotatingTexts.length;
+                    profileHandle.textContent = rotatingTexts[currentTextIndex];
+                    profileHandle.style.opacity = 1; // Fade in setelah perubahan teks
+                }, 500); // Durasi timeout harus sesuai dengan durasi transisi CSS (0.5s = 500ms)
+            };
+
+            // Event Listeners
+            window.addEventListener('scroll', () => {
+                setActiveLink(); // Untuk scroll spy
+                handleHeaderScroll(); // Untuk efek fade header
+            });
+
+            // Panggil fungsi saat halaman dimuat pertama kali
+            setActiveLink();
+            handleHeaderScroll();
+            animateText(); // Panggil pertama kali untuk menampilkan teks awal
+
+            // Set interval untuk animasi teks (2000ms = 2 detik)
+            setInterval(animateText, 2000);
+        });
+    </script>
+</body>
+</html>
