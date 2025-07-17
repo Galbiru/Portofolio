@@ -24,10 +24,10 @@
             --fade-end-scroll: 300px; /* Jarak scroll saat fade selesai (gambar tidak terlihat) */
         }
 
+        /* Set scroll-padding-top pada root HTML untuk smooth scrolling yang akurat */
         html {
             scroll-behavior: smooth;
-            /* Offset untuk smooth scroll agar konten tidak tertutup oleh header sticky */
-            scroll-padding-top: var(--nav-height); 
+            scroll-padding-top: var(--nav-height); /* Offset untuk smooth scroll agar konten tidak tertutup oleh navbar fixed */
         }
 
         body {
@@ -37,22 +37,21 @@
             background-color: var(--bg-dark); /* Fallback color for background */
             color: var(--text-light);
             line-height: 1.6;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Mencegah scroll horizontal yang tidak diinginkan */
 
-            /* ===== Start GIF Background Styling for Body ===== */
-            background-image: url('images/moving_fog.gif'); /* Path ke GIF yang diunduh */
+            /* ===== Background GIF for Body (fixed and full page) ===== */
+            background-image: url('images/moving_fog.gif'); /* Pastikan path ini benar */
             background-size: cover; /* Pastikan GIF menutupi seluruh area */
-            background-attachment: fixed; /* Membuat GIF tetap di tempat saat di-scroll */
+            background-attachment: fixed; /* Membuat GIF tetap di tempat saat di-scroll (efek parallax) */
             background-position: center; /* Pusatkan GIF */
             background-repeat: no-repeat; /* Jangan ulang GIF */
             
             /* Default: GIF lebih redup */
             filter: brightness(0.4); /* Menggelapkan GIF lebih banyak secara default */
             transition: filter 0.5s ease-in-out; /* Transisi untuk efek brightness */
-            /* ===== End GIF Background Styling for Body ===== */
         }
 
-        /* Class untuk mengaktifkan GIF di bagian bawah */
+        /* Class untuk mengaktifkan GIF di bagian bawah (lebih terang) */
         body.body-bottom-active {
             filter: brightness(1); /* GIF menjadi terang/full brightness */
         }
@@ -69,7 +68,7 @@
 
         /* Header Section */
         .profile-header {
-            position: relative; /* Ini penting agar .profile-background-visual bisa absolute di dalamnya */
+            position: relative; /* Penting agar .profile-background-visual bisa absolute di dalamnya */
             width: 100%;
             height: var(--header-initial-height); /* Tinggi header awal */
             overflow: hidden;
@@ -94,7 +93,7 @@
             height: 100%;
             background-color: var(--blue-dominant); /* Fallback jika gambar header gagal dimuat */
             overflow: hidden;
-            z-index: -1;
+            z-index: -1; /* Di belakang konten teks/gambar profil */
         }
 
         .profile-background-visual .background-img {
@@ -161,7 +160,7 @@
             transition: opacity 0.5s ease-in-out; /* Efek fade untuk animasi teks */
         }
 
-        /* Top Right Navigation */
+        /* Top Right Navigation (Fixed at top) */
         .top-nav {
             position: fixed; /* Menempel di viewport */
             top: 0; /* Di bagian paling atas */
@@ -217,7 +216,8 @@
             justify-content: center; /* Pusatkan konten utama */
             padding: 20px; /* Padding di sekitar konten */
             box-sizing: border-box;
-            margin-top: -100px; /* Menaikkan konten ke atas agar tidak ada gap besar dari header */
+            /* Adjust margin-top to account for header height so content starts after header */
+            margin-top: calc(var(--header-initial-height) - 100px); /* Disesuaikan agar konten tidak menimpa header dan tidak ada gap terlalu besar */
             position: relative;
             z-index: 10; /* Pastikan di atas footer, di bawah top-nav */
         }
@@ -468,9 +468,15 @@
             html {
                 scroll-padding-top: var(--nav-height);
             }
+            /* Menghapus filter default di mobile agar kompatibilitas lebih baik (GIF mungkin tidak bergerak dengan filter) */
             body {
-                filter: none; /* Hapus filter default di mobile agar kompatibilitas lebih baik */
+                filter: none; 
             }
+            /* Class untuk mengaktifkan GIF di bagian bawah (lebih terang) di mobile */
+            body.body-bottom-active {
+                filter: brightness(1); /* Tetap aktifkan brightness penuh di mobile jika kelas diterapkan */
+            }
+
             .profile-header {
                 height: var(--header-initial-height);
                 padding: 20px 10px;
@@ -503,7 +509,8 @@
                 padding: 6px 10px;
             }
             .content-wrapper {
-                margin-top: -80px;
+                /* Sesuaikan margin-top agar konten tepat di bawah header di mobile */
+                margin-top: var(--header-initial-height) - 100px; 
                 padding: 10px;
             }
             .main-content {
@@ -556,7 +563,7 @@
                 padding: 5px 8px;
             }
             .content-wrapper {
-                margin-top: -60px;
+                margin-top: var(--header-initial-height) - 80px; /* Sesuaikan lagi untuk HP sangat kecil */
             }
         }
     </style>
@@ -807,4 +814,32 @@
                 // ScrollY: posisi scroll dari atas dokumen
                 // window.innerHeight: tinggi viewport
                 // document.body.scrollHeight: tinggi total dokumen
-                const
+                // Cek apakah sudah di paling bawah atau sangat dekat dengan bawah
+                // Toleransi disesuaikan agar transisi tidak terlalu sensitif
+                const scrollThreshold = document.body.scrollHeight - window.innerHeight - 100; // 100px dari bawah
+                
+                if (window.scrollY >= scrollThreshold) {
+                    bodyElement.classList.add('body-bottom-active');
+                } else {
+                    bodyElement.classList.remove('body-bottom-active');
+                }
+            };
+
+            // Event Listeners
+            window.addEventListener('scroll', () => {
+                setActiveLink();
+                handleHeaderScroll();
+                handleBottomBackground(); // Panggil fungsi ini setiap kali scroll
+            });
+
+            // Panggil fungsi saat halaman dimuat pertama kali
+            setActiveLink();
+            handleHeaderScroll();
+            animateText();
+            handleBottomBackground(); // Panggil saat load untuk posisi awal
+
+            setInterval(animateText, 2000);
+        });
+    </script>
+</body>
+</html>
