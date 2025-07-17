@@ -34,10 +34,27 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--bg-dark);
+            background-color: var(--bg-dark); /* Fallback color for background */
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
+
+            /* ===== Start GIF Background Styling for Body ===== */
+            background-image: url('images/moving_fog.gif'); /* Path ke GIF yang diunduh */
+            background-size: cover; /* Pastikan GIF menutupi seluruh area */
+            background-attachment: fixed; /* Membuat GIF tetap di tempat saat di-scroll */
+            background-position: center; /* Pusatkan GIF */
+            background-repeat: no-repeat; /* Jangan ulang GIF */
+            
+            /* Default: GIF lebih redup */
+            filter: brightness(0.4); /* Menggelapkan GIF lebih banyak secara default */
+            transition: filter 0.5s ease-in-out; /* Transisi untuk efek brightness */
+            /* ===== End GIF Background Styling for Body ===== */
+        }
+
+        /* Class untuk mengaktifkan GIF di bagian bawah */
+        body.body-bottom-active {
+            filter: brightness(1); /* GIF menjadi terang/full brightness */
         }
 
         a {
@@ -75,9 +92,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--blue-dominant); /* Warna fallback jika gambar tidak dimuat */
+            background-color: var(--blue-dominant); /* Fallback jika gambar header gagal dimuat */
             overflow: hidden;
-            z-index: -1; /* Di belakang konten teks/gambar profil */
+            z-index: -1;
         }
 
         .profile-background-visual .background-img {
@@ -85,9 +102,9 @@
             height: 100%;
             object-fit: cover;
             object-position: center top;
-            filter: brightness(0.6) contrast(1.3); /* Sedikit gelap dan kontras */
-            opacity: 1; /* Opasitas awal */
-            transition: opacity 0.1s ease-out; /* Transisi untuk efek fade */
+            filter: brightness(0.6) contrast(1.3); /* Filter khusus untuk gambar header */
+            opacity: 1;
+            transition: opacity 0.1s ease-out;
         }
 
         .profile-background-visual .background-overlay {
@@ -97,8 +114,8 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.1));
-            opacity: 1; /* Opasitas awal */
-            transition: opacity 0.1s ease-out; /* Transisi untuk efek fade */
+            opacity: 1;
+            transition: opacity 0.1s ease-out;
         }
 
         /* Konten di dalam header (foto, nama, handle) */
@@ -210,7 +227,7 @@
             max-width: 800px;
             width: 100%;
             padding: 30px;
-            background-color: #111;
+            background-color: #111; /* Tetap solid agar GIF background tidak menembus konten */
             border-radius: 10px;
             box-shadow: 0 5px 30px rgba(0, 0, 0, 0.6);
         }
@@ -406,7 +423,7 @@
             padding: 20px 0;
             font-size: 0.9em;
             border-top: 1px solid #222;
-            z-index: 999; /* Pastikan di atas semua konten saat fixed jika diperlukan */
+            z-index: 999;
         }
 
         /* Responsive Adjustments */
@@ -423,7 +440,7 @@
                 height: 130px;
             }
             .top-nav {
-                height: var(--nav-height); /* Tetap tinggi navigasi */
+                height: var(--nav-height);
                 padding: 0 15px;
             }
             .top-nav ul li {
@@ -451,6 +468,9 @@
             html {
                 scroll-padding-top: var(--nav-height);
             }
+            body {
+                filter: none; /* Hapus filter default di mobile agar kompatibilitas lebih baik */
+            }
             .profile-header {
                 height: var(--header-initial-height);
                 padding: 20px 10px;
@@ -468,7 +488,7 @@
             .top-nav {
                 height: var(--nav-height);
                 padding: 0 10px;
-                justify-content: center; /* Pusatkan menu di mobile */
+                justify-content: center;
             }
             .top-nav ul {
                 flex-wrap: wrap;
@@ -483,7 +503,7 @@
                 padding: 6px 10px;
             }
             .content-wrapper {
-                margin-top: -80px; /* Sesuaikan margin top untuk mobile */
+                margin-top: -80px;
                 padding: 10px;
             }
             .main-content {
@@ -500,7 +520,7 @@
                 font-size: 1em;
             }
             .card-container {
-                grid-template-columns: 1fr; /* Satu kolom di mobile */
+                grid-template-columns: 1fr;
                 gap: 20px;
             }
             .about-section h2 {
@@ -652,7 +672,7 @@
                         <p>Leverage cloud platforms for scalable and reliable infrastructure.</p>
                     </div>
                 </div>
-                <p style="margin-top: 20px; text-align: center;">Looking for a custom job? <a href="https://wa.me/6285173173716" target="_blank" style="color: var(--link-color);">Click here</a> to contact me! <i class="fas fa-hand-wave"></i></p>
+                <p style="margin-top: 20px; text-align: center;">Looking for a custom job? <a href="https://wa.me/6285173173716" target="_blank" style="color: var(--link-color);">+62 851-7317-3716</a> to contact me! <i class="fas fa-hand-wave"></i></p>
             </section>
 
             <section id="experience" class="about-section">
@@ -662,6 +682,11 @@
                         <p style="font-weight: bold; color: var(--blue-dominant);">2024 - 2025</p>
                         <h3>IT Executive<span style="font-weight: normal; color: #ccc;">• Acorn Consultant</span></h3>
                         <p>Provided comprehensive IT support across network infrastructure, server management, hardware, software, and meticulous project documentation.</p>
+                    </div>
+                    <div class="card experience">
+                        <p style="font-weight: bold; color: var(--blue-dominant);">2023 - Present</p>
+                        <h3>IT Sales Professional <span style="font-weight: normal; color: #ccc;">• Galtech</span></h3>
+                        <p>The sale of comprehensive information technology solutions, encompassing the provision of computer hardware (such as personal computers, laptops, servers, networking devices, and peripherals), software licensing (operating systems, business applications, productivity software, and cybersecurity solutions), and related information technology services (including system implementation, integration, technical support, IT consulting, and maintenance).</p>
                     </div>
                     <div class="card experience">
                         <p style="font-weight: bold; color: var(--blue-dominant);">2019 - 2024</p>
@@ -697,12 +722,15 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const sections = document.querySelectorAll('.main-content section');
-            const navLinks = document.querySelectorAll('.top-nav a'); // Menggunakan .top-nav
+            const navLinks = document.querySelectorAll('.top-nav a');
             const headerElement = document.getElementById('top');
             const backgroundImg = document.querySelector('.profile-background-visual .background-img');
             const backgroundOverlay = document.querySelector('.profile-background-visual .background-overlay');
-            const profileHandle = document.querySelector('.profile-handle'); // Elemen untuk animasi teks
+            const profileHandle = document.querySelector('.profile-handle');
             
+            // Elemen body untuk mengaktifkan/menonaktifkan efek brightness pada background GIF
+            const bodyElement = document.body; 
+
             // Teks yang akan dirotasi
             const rotatingTexts = ["IT Support", "Web Developer", "Trainer", "Network Support & Troubleshooting"];
             let currentTextIndex = 0;
@@ -711,11 +739,10 @@
             const getCssVar = (varName) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(varName));
             const fadeStartScroll = getCssVar('--fade-start-scroll');
             const fadeEndScroll = getCssVar('--fade-end-scroll');
-            const navHeight = getCssVar('--nav-height'); // Tinggi navigasi atas
+            const navHeight = getCssVar('--nav-height');
 
             // Fungsi untuk menghitung offset scroll yang akurat
             const getScrollOffset = () => {
-                // Offset utama adalah tinggi navigasi tetap
                 return navHeight; 
             };
 
@@ -724,28 +751,24 @@
                 const scrollY = window.pageYOffset;
                 const offsetThreshold = getScrollOffset(); 
 
-                // Iterate in reverse to prioritize sections further down the page
                 for (let i = sections.length - 1; i >= 0; i--) {
                     const section = sections[i];
                     const sectionTop = section.getBoundingClientRect().top + scrollY - offsetThreshold;
                     const sectionBottom = sectionTop + section.offsetHeight;
 
-                    // Tambahkan toleransi 1px agar transisi lebih mulus saat scrolling
                     if (scrollY >= sectionTop - 1 && scrollY < sectionBottom - 1) {
                         currentActiveSectionId = section.id;
                         break;
                     }
                 }
                 
-                // Special handling for "Home" (top of the page)
-                // Jika posisi scroll berada di atas section pertama
                 if (scrollY < sections[0].getBoundingClientRect().top + scrollY - offsetThreshold + 50) { 
                     currentActiveSectionId = 'top';
                 }
 
                 navLinks.forEach(link => {
                     link.classList.remove('active');
-                    const linkTargetId = link.getAttribute('href').substring(1); // Hapus '#'
+                    const linkTargetId = link.getAttribute('href').substring(1);
 
                     if (linkTargetId === currentActiveSectionId) {
                         link.classList.add('active');
@@ -757,13 +780,12 @@
             const handleHeaderScroll = () => {
                 const scrollY = window.pageYOffset;
 
-                // Hitung faktor opasitas berdasarkan posisi scroll
                 let opacityFactor = 1;
                 if (scrollY > fadeStartScroll) {
                     opacityFactor = 1 - (scrollY - fadeStartScroll) / (fadeEndScroll - fadeStartScroll);
-                    if (opacityFactor < 0) opacityFactor = 0; // Pastikan opasitas tidak negatif
+                    if (opacityFactor < 0) opacityFactor = 0;
                 } else {
-                    opacityFactor = 1; // Kembali ke opasitas penuh jika di atas fadeStartScroll
+                    opacityFactor = 1;
                 }
 
                 backgroundImg.style.opacity = opacityFactor;
@@ -772,28 +794,17 @@
 
             // Fungsi untuk animasi teks dengan efek fade
             const animateText = () => {
-                profileHandle.style.opacity = 0; // Mulai fade out
+                profileHandle.style.opacity = 0;
                 setTimeout(() => {
                     currentTextIndex = (currentTextIndex + 1) % rotatingTexts.length;
                     profileHandle.textContent = rotatingTexts[currentTextIndex];
-                    profileHandle.style.opacity = 1; // Fade in setelah perubahan teks
-                }, 500); // Durasi timeout harus sesuai dengan durasi transisi CSS (0.5s = 500ms)
+                    profileHandle.style.opacity = 1;
+                }, 500);
             };
 
-            // Event Listeners
-            window.addEventListener('scroll', () => {
-                setActiveLink(); // Untuk scroll spy
-                handleHeaderScroll(); // Untuk efek fade header
-            });
-
-            // Panggil fungsi saat halaman dimuat pertama kali
-            setActiveLink();
-            handleHeaderScroll();
-            animateText(); // Panggil pertama kali untuk menampilkan teks awal
-
-            // Set interval untuk animasi teks (2000ms = 2 detik)
-            setInterval(animateText, 2000);
-        });
-    </script>
-</body>
-</html>
+            // Fungsi untuk mengontrol background GIF di bagian bawah
+            const handleBottomBackground = () => {
+                // ScrollY: posisi scroll dari atas dokumen
+                // window.innerHeight: tinggi viewport
+                // document.body.scrollHeight: tinggi total dokumen
+                const
