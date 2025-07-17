@@ -18,7 +18,7 @@
             --link-hover: #9c27b0;  /* Ungu lebih terang */
             --border-color: #555;   /* Abu-abu untuk border */
             --dark-blue-hover-social: #000080; /* Biru dongker khusus untuk hover ikon sosial */
-            --header-initial-height: 450px; /* Tinggi header awal yang lebih besar */
+            --header-initial-height: 675px; /* Tinggi header awal 1.5x lebih besar (450 * 1.5) */
             --nav-height: 60px; /* Tinggi menu navigasi atas */
             --fade-start-scroll: 50px; /* Jarak scroll sebelum fade dimulai */
             --fade-end-scroll: 300px; /* Jarak scroll saat fade selesai (gambar tidak terlihat) */
@@ -70,7 +70,7 @@
         .profile-header {
             position: relative; /* Penting agar .profile-background-visual bisa absolute di dalamnya */
             width: 100%;
-            height: var(--header-initial-height); /* Tinggi header awal */
+            height: var(--header-initial-height); /* Tinggi header dari variabel */
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -429,7 +429,7 @@
         /* Responsive Adjustments */
         @media (max-width: 992px) {
             .profile-header {
-                height: 400px;
+                height: 600px; /* 400 * 1.5 */
                 padding: 30px 15px;
             }
             .profile-name {
@@ -461,7 +461,7 @@
 
         @media (max-width: 768px) {
             :root {
-                --header-initial-height: 350px;
+                --header-initial-height: 525px; /* 350 * 1.5 */
                 --nav-height: 50px;
                 --nav-item-spacing: 10px;
             }
@@ -482,8 +482,8 @@
                 padding: 20px 10px;
             }
             .profile-pic {
-                width: 100px;
-                height: 100px;
+                width: 120px; /* Diperbesar sedikit di 768px dari 100px sebelumnya */
+                height: 120px;
             }
             .profile-name {
                 font-size: 2em;
@@ -510,7 +510,7 @@
             }
             .content-wrapper {
                 /* Sesuaikan margin-top agar konten tepat di bawah header di mobile */
-                margin-top: var(--header-initial-height) - 100px; 
+                margin-top: calc(var(--header-initial-height) - 100px); 
                 padding: 10px;
             }
             .main-content {
@@ -543,14 +543,14 @@
 
         @media (max-width: 480px) {
             :root {
-                --header-initial-height: 300px;
+                --header-initial-height: 450px; /* 300 * 1.5 */
             }
             .profile-header {
                 height: var(--header-initial-height);
             }
             .profile-pic {
-                width: 80px;
-                height: 80px;
+                width: 100px; /* Diperbesar sedikit di 480px dari 80px sebelumnya */
+                height: 100px;
             }
             .profile-name {
                 font-size: 1.8em;
@@ -563,7 +563,8 @@
                 padding: 5px 8px;
             }
             .content-wrapper {
-                margin-top: var(--header-initial-height) - 80px; /* Sesuaikan lagi untuk HP sangat kecil */
+                /* Sesuaikan margin-top untuk HP sangat kecil */
+                margin-top: calc(var(--header-initial-height) - 100px); 
             }
         }
     </style>
@@ -811,14 +812,18 @@
 
             // Fungsi untuk mengontrol background GIF di bagian bawah
             const handleBottomBackground = () => {
-                // ScrollY: posisi scroll dari atas dokumen
-                // window.innerHeight: tinggi viewport
-                // document.body.scrollHeight: tinggi total dokumen
-                // Cek apakah sudah di paling bawah atau sangat dekat dengan bawah
-                // Toleransi disesuaikan agar transisi tidak terlalu sensitif
-                const scrollThreshold = document.body.scrollHeight - window.innerHeight - 100; // 100px dari bawah
-                
-                if (window.scrollY >= scrollThreshold) {
+                // Mendapatkan tinggi total dokumen yang bisa di-scroll
+                const documentHeight = document.body.scrollHeight;
+                // Mendapatkan tinggi viewport
+                const viewportHeight = window.innerHeight;
+                // Posisi scroll dari atas
+                const currentScrollY = window.scrollY;
+
+                // Hitung seberapa dekat ke bawah, misalnya 150px dari bagian paling bawah
+                const distanceFromBottom = documentHeight - (currentScrollY + viewportHeight);
+                const activationThreshold = 150; // Jarak dari bawah untuk mengaktifkan efek
+
+                if (distanceFromBottom <= activationThreshold) {
                     bodyElement.classList.add('body-bottom-active');
                 } else {
                     bodyElement.classList.remove('body-bottom-active');
