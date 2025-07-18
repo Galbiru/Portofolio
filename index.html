@@ -167,6 +167,9 @@
             height: 1em; /* Ukuran relatif terhadap font-size .profile-name */
             margin-left: 10px;
             vertical-align: middle;
+            display: none; /* Awalnya sembunyikan logo di header */
+            opacity: 0; /* Awalnya tidak terlihat untuk fade-in */
+            transition: opacity 0.5s ease-in; /* Transisi fade-in untuk logo header */
         }
 
         .profile-name {
@@ -182,6 +185,14 @@
             color: #4CAF50;
             margin-left: 10px;
             font-size: 0.8em; /* Relatif terhadap font-size .profile-name */
+            /* Pastikan badge verified disembunyikan jika Anda hanya ingin logo */
+            display: none; 
+        }
+
+        /* Tampilkan logo header saat body sudah fade-in */
+        body.fade-in .profile-name .header-logo {
+            display: inline-block; /* Tampilkan logo sebagai inline-block */
+            opacity: 1; /* Fade-in logo */
         }
 
         .profile-name .fas.fa-check-circle {
@@ -611,7 +622,7 @@
                 <span class="verified-badge" title="Verified Account">
                     <i class="fas fa-check-circle"></i> 
                 </span>
-                <img src="logo.png" alt="Logo" class="header-logo"> </h1>
+                <img src="logo.png" alt="Logo Anda" class="header-logo"> </h1>
             <p class="profile-handle">IT Support</p> 
         </div>
     </header>
@@ -653,7 +664,7 @@
                     <p style="text-align: right; margin-top: 5px; font-size: 0.9em; color: #aaa;">90%</p>
                 </div>
                 <div class="skill-item">
-                    <p><strong>Web Developer</p>
+                    <p><strong>Web Developer</strong></p>
                     <div class="skill-bar-container">
                         <div class="skill-bar skill-2"></div>
                     </div>
@@ -745,7 +756,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const entranceScreen = document.getElementById('entrance-screen');
-            const bodyElement = document.body;
+            const bodyElement = document.body; 
+            const headerLogo = document.querySelector('.profile-name .header-logo'); // Dapatkan elemen logo di header
+            const verifiedBadge = document.querySelector('.profile-name .verified-badge'); // Dapatkan elemen verified badge
+            
             const sections = document.querySelectorAll('.main-content section');
             const navLinks = document.querySelectorAll('.top-nav a');
             const headerElement = document.getElementById('top');
@@ -836,17 +850,27 @@
                 handleHeaderScroll();
             });
 
-            // --- Entrance Screen & Body Fade-in Logic ---
+            // --- Entrance Screen, Body Fade-in, and Header Logo Logic ---
             setTimeout(() => {
                 entranceScreen.classList.add('fade-out'); // Mulai fade-out entrance screen
                 // Setelah entrance screen mulai fade-out, biarkan sedikit waktu
-                // lalu mulai fade-in body
+                // lalu mulai fade-in body dan tampilkan logo di header
                 setTimeout(() => {
                     bodyElement.classList.add('fade-in'); // Mulai fade-in body
+                    if (verifiedBadge) { // Sembunyikan badge verified jika ada
+                        verifiedBadge.style.display = 'none';
+                    }
+                    if (headerLogo) { // Tampilkan dan fade-in logo di header
+                        headerLogo.style.display = 'inline-block'; // Pastikan terlihat
+                        headerLogo.style.opacity = '1'; // Aktifkan transisi opacity
+                    }
                 }, 500); // Penundaan 0.5 detik setelah entrance screen mulai fade-out
             }, 1500); // Durasi sebelum fade-out entrance screen dimulai (1.5 detik)
 
             // Initial calls
+            // Pastikan body awalnya tersembunyi untuk transisi
+            bodyElement.style.opacity = '0'; 
+
             setActiveLink();
             handleHeaderScroll();
             animateText();
