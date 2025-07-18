@@ -39,6 +39,13 @@
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
+            /* Tambahan untuk fade-in body */
+            opacity: 0; /* Awalnya tidak terlihat */
+            transition: opacity 1s ease-in; /* Transisi fade-in untuk body */
+        }
+
+        body.fade-in {
+            opacity: 1; /* Fade in */
         }
 
         a {
@@ -631,7 +638,7 @@
                     <p style="text-align: right; margin-top: 5px; font-size: 0.9em; color: #aaa;">90%</p>
                 </div>
                 <div class="skill-item">
-                    <p><strong>Web Developer</strong></p>
+                    <p><strong>Web Developer</p>
                     <div class="skill-bar-container">
                         <div class="skill-bar skill-2"></div>
                     </div>
@@ -723,6 +730,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const entranceScreen = document.getElementById('entrance-screen');
+            const bodyElement = document.body; // Dapatkan elemen body
             const sections = document.querySelectorAll('.main-content section');
             const navLinks = document.querySelectorAll('.top-nav a');
             const headerElement = document.getElementById('top');
@@ -813,10 +821,15 @@
                 handleHeaderScroll();
             });
 
-            // --- Entrance Screen Logic ---
+            // --- Entrance Screen & Body Fade-in Logic ---
             setTimeout(() => {
-                entranceScreen.classList.add('fade-out');
-            }, 1500); // Duration before fade-out starts (1.5 seconds)
+                entranceScreen.classList.add('fade-out'); // Mulai fade-out entrance screen
+                // Setelah entrance screen mulai fade-out, biarkan sedikit waktu
+                // lalu mulai fade-in body
+                setTimeout(() => {
+                    bodyElement.classList.add('fade-in'); // Mulai fade-in body
+                }, 500); // Penundaan 0.5 detik setelah entrance screen mulai fade-out
+            }, 1500); // Durasi sebelum fade-out entrance screen dimulai (1.5 detik)
 
             // Initial calls
             setActiveLink();
