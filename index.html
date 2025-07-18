@@ -34,7 +34,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding-top: var(--nav-height); /* Add padding to body equal to nav height */
             background-color: var(--bg-dark);
             color: var(--text-light);
             line-height: 1.6;
@@ -68,6 +68,7 @@
             z-index: 50; /* Di bawah top-nav, di atas main-content */
             background-color: transparent; /* Awalnya transparan agar background halaman terlihat */
             border-bottom: 5px solid #111; /* Border yang diubah */
+            /* Remove fixed positioning from header */
         }
 
         /* Container untuk background image dan overlay di header */
@@ -204,7 +205,7 @@
             justify-content: center; /* Pusatkan konten utama */
             padding: 20px; /* Padding di sekitar konten */
             box-sizing: border-box;
-            margin-top: -100px; /* Menaikkan konten ke atas agar tidak ada gap besar dari header */
+            margin-top: 0; /* REMOVE NEGATIVE MARGIN */
             position: relative;
             z-index: 10; /* Pastikan di atas footer, di bawah top-nav */
         }
@@ -455,6 +456,9 @@
             html {
                 scroll-padding-top: var(--nav-height);
             }
+            body {
+                padding-top: var(--nav-height); /* Ensure padding top is applied on mobile */
+            }
             .profile-header {
                 height: var(--header-initial-height);
                 padding: 30px 10px; /* Padding lebih besar */
@@ -489,7 +493,7 @@
                 padding: 8px 12px;
             }
             .content-wrapper {
-                margin-top: -100px; /* Kembalikan ke nilai yang lebih normal agar tidak terlalu jauh */
+                margin-top: 0; /* REMOVE NEGATIVE MARGIN */
                 padding: 15px;
             }
         }
@@ -517,7 +521,7 @@
                 padding: 6px 10px;
             }
             .content-wrapper {
-                margin-top: -80px; /* Sesuaikan lagi */
+                margin-top: 0; /* REMOVE NEGATIVE MARGIN */
             }
         }
     </style>
@@ -698,21 +702,25 @@
                 const scrollY = window.pageYOffset;
                 const offsetThreshold = getScrollOffset(); 
 
-                for (let i = sections.length - 1; i >= 0; i--) {
-                    const section = sections[i];
-                    const sectionTop = section.getBoundingClientRect().top + scrollY - offsetThreshold;
-                    const sectionBottom = sectionTop + section.offsetHeight;
+                // Check if we are still within the header section
+                const headerBottom = headerElement.offsetHeight - navHeight; // Adjust for nav height
+                if (scrollY < headerBottom) {
+                    currentActiveSectionId = 'top';
+                } else {
+                    for (let i = sections.length - 1; i >= 0; i--) {
+                        const section = sections[i];
+                        const sectionTop = section.getBoundingClientRect().top + scrollY; // Use scrollY
+                        const sectionBottom = sectionTop + section.offsetHeight;
 
-                    if (scrollY >= sectionTop - 1 && scrollY < sectionBottom - 1) {
-                        currentActiveSectionId = section.id;
-                        break;
+                        // Check if the current scroll position is within the section,
+                        // accounting for the fixed navigation bar
+                        if (scrollY + offsetThreshold >= sectionTop && scrollY + offsetThreshold < sectionBottom) {
+                            currentActiveSectionId = section.id;
+                            break;
+                        }
                     }
                 }
                 
-                if (scrollY < sections[0].getBoundingClientRect().top + scrollY - offsetThreshold + 50) { 
-                    currentActiveSectionId = 'top';
-                }
-
                 navLinks.forEach(link => {
                     link.classList.remove('active');
                     const linkTargetId = link.getAttribute('href').substring(1);
@@ -725,7 +733,9 @@
 
             const handleHeaderScroll = () => {
                 const scrollY = window.pageYOffset;
-
+                const headerInitialHeight = getCssVar('--header-initial-height');
+                
+                // Calculate opacity based on scroll
                 let opacityFactor = 1;
                 if (scrollY > fadeStartScroll) {
                     opacityFactor = 1 - (scrollY - fadeStartScroll) / (fadeEndScroll - fadeStartScroll);
@@ -736,6 +746,12 @@
 
                 backgroundImg.style.opacity = opacityFactor;
                 backgroundOverlay.style.opacity = opacityFactor;
+
+                // Make header sticky after scrolling past its initial height (minus nav height)
+                // if (scrollY > headerInitialHeight - navHeight) {
+                //     // You could add a class here to make the header background solid
+                //     // For this current setup, it already transitions to black with overlay
+                // }
             };
 
             const animateText = () => {
@@ -752,6 +768,7 @@
                 handleHeaderScroll();
             });
 
+            // Initial calls
             setActiveLink();
             handleHeaderScroll();
             animateText();
