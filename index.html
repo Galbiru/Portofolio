@@ -13,7 +13,6 @@
             --blue-dark: #001a33;    /* Biru dongker gelap */
             --text-light: #f0f0f0;  /* Hampir putih */
             --text-dark: #333;      /* Abu-abu gelap */
-            --bg-dark: #000;         /* Hitam pekat */
             --link-color: #6a1b9a;  /* Ungu gelap */
             --link-hover: #9c27b0;  /* Ungu lebih terang */
             --border-color: #555;    /* Abu-abu untuk border */
@@ -81,9 +80,9 @@
         }
 
         #entrance-screen img {
-            /* Perubahan di sini untuk membuat gambar 2x lebih besar */
-            max-width: 400px; /* Ukuran sebelumnya 200px * 2 = 400px */
-            max-height: 400px; /* Ukuran sebelumnya 200px * 2 = 400px */
+            /* Ukuran logo di entrance screen */
+            max-width: 400px; 
+            max-height: 400px; 
             animation: pulse 1.5s infinite alternate; /* Simple animation for the logo */
         }
 
@@ -161,6 +160,13 @@
             margin-bottom: 20px; /* Diperbesar */
             margin-top: 15px; /* Menurunkan posisi foto profil */
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Logo kecil di samping nama profil */
+        .profile-name .header-logo {
+            height: 1em; /* Ukuran relatif terhadap font-size .profile-name */
+            margin-left: 10px;
+            vertical-align: middle;
         }
 
         .profile-name {
@@ -490,6 +496,9 @@
                 max-width: 300px; 
                 max-height: 300px;
             }
+            .profile-name .header-logo { /* Sesuaikan ukuran logo di header untuk tablet */
+                height: 0.9em;
+            }
         }
 
         @media (max-width: 768px) {
@@ -545,6 +554,9 @@
                 max-width: 250px; 
                 max-height: 250px;
             }
+            .profile-name .header-logo { /* Sesuaikan ukuran logo di header untuk HP */
+                height: 0.8em;
+            }
         }
 
         @media (max-width: 480px) {
@@ -576,6 +588,9 @@
                 max-width: 200px; 
                 max-height: 200px;
             }
+            .profile-name .header-logo { /* Sesuaikan ukuran logo di header untuk HP kecil */
+                height: 0.7em;
+            }
         }
     </style>
 </head>
@@ -596,7 +611,7 @@
                 <span class="verified-badge" title="Verified Account">
                     <i class="fas fa-check-circle"></i> 
                 </span>
-            </h1>
+                <img src="logo.png" alt="Logo" class="header-logo"> </h1>
             <p class="profile-handle">IT Support</p> 
         </div>
     </header>
@@ -730,7 +745,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const entranceScreen = document.getElementById('entrance-screen');
-            const bodyElement = document.body; // Dapatkan elemen body
+            const bodyElement = document.body;
             const sections = document.querySelectorAll('.main-content section');
             const navLinks = document.querySelectorAll('.top-nav a');
             const headerElement = document.getElementById('top');
