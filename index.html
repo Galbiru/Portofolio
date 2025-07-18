@@ -13,6 +13,7 @@
             --blue-dark: #001a33;    /* Biru dongker gelap */
             --text-light: #f0f0f0;  /* Hampir putih */
             --text-dark: #333;      /* Abu-abu gelap */
+            --bg-dark: #000;         /* Hitam pekat */
             --link-color: #6a1b9a;  /* Ungu gelap */
             --link-hover: #9c27b0;  /* Ungu lebih terang */
             --border-color: #555;    /* Abu-abu untuk border */
@@ -38,8 +39,8 @@
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
-            /* Tambahan untuk fade-in body */
-            opacity: 0; /* Awalnya tidak terlihat */
+            /* Pastikan body awalnya tidak terlihat untuk efek fade-in */
+            opacity: 0; 
             transition: opacity 1s ease-in; /* Transisi fade-in untuk body */
         }
 
@@ -70,13 +71,13 @@
             align-items: center;
             z-index: 9999; /* Ensure it's on top of everything */
             opacity: 1;
-            transition: opacity 1s ease-out; /* Fade out transition */
+            transition: opacity 1s ease-out, visibility 0s 1s; /* Fade out, lalu sembunyikan setelah transisi */
         }
 
         #entrance-screen.fade-out {
             opacity: 0;
-            visibility: hidden; /* Hide after fade out to allow interaction */
-            pointer-events: none; /* Disable interaction during fade out */
+            visibility: hidden; /* Sembunyikan setelah fade out */
+            pointer-events: none; /* Nonaktifkan interaksi mouse */
         }
 
         #entrance-screen img {
@@ -93,22 +94,21 @@
 
         /* Header Section */
         .profile-header {
-            position: relative; /* Ini penting agar .profile-background-visual bisa absolute di dalamnya */
+            position: relative; 
             width: 100%;
-            height: var(--header-initial-height); /* Tinggi header awal */
+            height: var(--header-initial-height); 
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Konten di tengah vertikal */
+            justify-content: center; 
             align-items: center;
             text-align: center;
             color: var(--text-light);
-            padding: 40px 20px; /* Padding untuk konten dalam header */
+            padding: 40px 20px; 
             box-sizing: border-box;
-            z-index: 50; /* Di bawah top-nav, di atas main-content */
-            background-color: transparent; /* Awalnya transparan agar background halaman terlihat */
-            border-bottom: 5px solid #111; /* Border yang diubah */
-            /* Remove fixed positioning from header */
+            z-index: 50; 
+            background-color: transparent; 
+            border-bottom: 5px solid #111; 
         }
 
         /* Container untuk background image dan overlay di header */
@@ -118,9 +118,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--blue-dominant); /* Warna fallback jika gambar tidak dimuat */
+            background-color: var(--blue-dominant); 
             overflow: hidden;
-            z-index: -1; /* Di belakang konten teks/gambar profil */
+            z-index: -1; 
         }
 
         .profile-background-visual .background-img {
@@ -128,9 +128,9 @@
             height: 100%;
             object-fit: cover;
             object-position: center top;
-            filter: brightness(0.6) contrast(1.3); /* Sedikit gelap dan kontras */
-            opacity: 1; /* Opasitas awal */
-            transition: opacity 0.1s ease-out; /* Transisi untuk efek fade */
+            filter: brightness(0.6) contrast(1.3); 
+            opacity: 1; 
+            transition: opacity 0.1s ease-out; 
         }
 
         .profile-background-visual .background-overlay {
@@ -140,40 +140,40 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.1));
-            opacity: 1; /* Opasitas awal */
-            transition: opacity 0.1s ease-out; /* Transisi untuk efek fade */
+            opacity: 1; 
+            transition: opacity 0.1s ease-out; 
         }
 
         /* Konten di dalam header (foto, nama, handle) */
         .profile-content {
             position: relative;
             z-index: 10;
-            font-size: 16px; /* Font dasar untuk .profile-content */
+            font-size: 16px; 
         }
 
         .profile-pic {
-            width: 180px; /* Diperbesar */
-            height: 180px; /* Diperbesar */
+            width: 180px; 
+            height: 180px; 
             border-radius: 50%;
             border: 5px solid var(--text-light);
             object-fit: cover;
-            margin-bottom: 20px; /* Diperbesar */
-            margin-top: 15px; /* Menurunkan posisi foto profil */
+            margin-bottom: 20px; 
+            margin-top: 15px; 
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
         }
 
         /* Logo kecil di samping nama profil */
         .profile-name .header-logo {
-            height: 1em; /* Ukuran relatif terhadap font-size .profile-name */
+            height: 1em; 
             margin-left: 10px;
             vertical-align: middle;
-            display: none; /* Awalnya sembunyikan logo di header */
             opacity: 0; /* Awalnya tidak terlihat untuk fade-in */
-            transition: opacity 0.5s ease-in; /* Transisi fade-in untuk logo header */
+            visibility: hidden; /* Sembunyikan untuk transisi yang mulus */
+            transition: opacity 0.5s ease-in, visibility 0s 0.5s; /* Fade-in, lalu tampilkan setelah transisi */
         }
 
         .profile-name {
-            font-size: 3.5em; /* Diperbesar agar lebih menonjol di desktop & mobile */
+            font-size: 3.5em; 
             margin: 10px 0 5px 0;
             font-weight: bold;
             display: flex;
@@ -182,17 +182,14 @@
         }
 
         .verified-badge {
-            color: #4CAF50;
-            margin-left: 10px;
-            font-size: 0.8em; /* Relatif terhadap font-size .profile-name */
-            /* Pastikan badge verified disembunyikan jika Anda hanya ingin logo */
-            display: none; 
+            display: none; /* Sembunyikan badge verified sepenuhnya */
         }
 
         /* Tampilkan logo header saat body sudah fade-in */
         body.fade-in .profile-name .header-logo {
-            display: inline-block; /* Tampilkan logo sebagai inline-block */
             opacity: 1; /* Fade-in logo */
+            visibility: visible; /* Tampilkan logo */
+            transition-delay: 0s; /* Hapus penundaan visibility saat fade-in */
         }
 
         .profile-name .fas.fa-check-circle {
@@ -200,28 +197,28 @@
         }
 
         .profile-handle {
-            font-size: 1.6em; /* Diperbesar */
+            font-size: 1.6em; 
             color: #aaa;
-            margin-top: 5px; /* Diperbesar */
-            min-height: 1.6em; /* Pastikan tinggi cukup untuk teks terpanjang */
-            transition: opacity 0.5s ease-in-out; /* Efek fade untuk animasi teks */
+            margin-top: 5px; 
+            min-height: 1.6em; 
+            transition: opacity 0.5s ease-in-out; 
         }
 
         /* Top Right Navigation */
         .top-nav {
-            position: fixed; /* Menempel di viewport */
-            top: 0; /* Di bagian paling atas */
-            left: 0; /* Membentang penuh */
+            position: fixed; 
+            top: 0; 
+            left: 0; 
             width: 100%;
-            background-color: var(--bg-dark); /* Latar belakang menu */
-            padding: 0 20px; /* Padding horizontal */
+            background-color: var(--bg-dark); 
+            padding: 0 20px; 
             box-sizing: border-box;
             display: flex;
-            justify-content: flex-end; /* Rata kanan */
+            justify-content: flex-end; 
             align-items: center;
-            height: var(--nav-height); /* Tinggi menu */
-            z-index: 1000; /* Pastikan di atas semua elemen lain */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Shadow tipis */
+            height: var(--nav-height); 
+            z-index: 1000; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); 
         }
 
         .top-nav ul {
@@ -233,7 +230,7 @@
         }
 
         .top-nav ul li {
-            margin-left: var(--nav-item-spacing); /* Spasi antar item */
+            margin-left: var(--nav-item-spacing); 
         }
 
         .top-nav ul li:first-child {
@@ -260,12 +257,12 @@
         /* Main Content Wrapper (Menampung main-content) */
         .content-wrapper {
             display: flex;
-            justify-content: center; /* Pusatkan konten utama */
-            padding: 20px; /* Padding di sekitar konten */
+            justify-content: center; 
+            padding: 20px; 
             box-sizing: border-box;
-            margin-top: 0; /* REMOVE NEGATIVE MARGIN */
+            margin-top: 0; 
             position: relative;
-            z-index: 10; /* Pastikan di atas footer, di bawah top-nav */
+            z-index: 10; 
         }
 
         /* Main Content Area */
@@ -469,25 +466,25 @@
             padding: 20px 0;
             font-size: 0.9em;
             border-top: 1px solid #222;
-            z-index: 999; /* Pastikan di atas semua konten saat fixed jika diperlukan */
+            z-index: 999; 
         }
 
         /* Responsive Adjustments */
         @media (max-width: 992px) {
             :root {
-                --header-initial-height: 450px; /* Sesuaikan untuk tablet */
+                --header-initial-height: 450px; 
             }
             .profile-header {
                 height: var(--header-initial-height);
-                padding: 40px 15px; /* Padding lebih besar */
+                padding: 40px 15px; 
             }
             .profile-pic {
                 width: 160px;
                 height: 160px;
-                margin-top: 10px; /* Sesuaikan juga di media query */
+                margin-top: 10px; 
             }
             .profile-name {
-                font-size: 3em; /* Tetap besar untuk tablet */
+                font-size: 3em; 
             }
             .profile-handle {
                 font-size: 1.4em;
@@ -497,56 +494,56 @@
                 padding: 0 15px;
             }
             .top-nav ul li {
-                margin-left: var(--nav-item-spacing); /* Jaga spasi yang cukup */
+                margin-left: var(--nav-item-spacing); 
             }
             .top-nav ul li a {
                 font-size: 1.1em;
                 padding: 10px 15px;
             }
-            #entrance-screen img { /* Sesuaikan untuk tablet */
+            #entrance-screen img { 
                 max-width: 300px; 
                 max-height: 300px;
             }
-            .profile-name .header-logo { /* Sesuaikan ukuran logo di header untuk tablet */
+            .profile-name .header-logo { 
                 height: 0.9em;
             }
         }
 
         @media (max-width: 768px) {
             :root {
-                --header-initial-height: 400px; /* Diperbesar untuk HP */
-                --nav-height: 60px; /* Diperbesar navigasi agar tidak terlalu kecil */
-                --nav-item-spacing: 15px; /* Spasi antar item navigasi */
+                --header-initial-height: 400px; 
+                --nav-height: 60px; 
+                --nav-item-spacing: 15px; 
             }
             html {
                 scroll-padding-top: var(--nav-height);
             }
             body {
-                padding-top: var(--nav-height); /* Ensure padding top is applied on mobile */
+                padding-top: var(--nav-height); 
             }
             .profile-header {
                 height: var(--header-initial-height);
-                padding: 30px 10px; /* Padding lebih besar */
+                padding: 30px 10px; 
             }
             .profile-pic {
-                width: 140px; /* Diperbesar untuk HP */
-                height: 140px; /* Diperbesar untuk HP */
-                margin-bottom: 15px; /* Sesuaikan margin */
-                margin-top: 5px; /* Sesuaikan juga di media query */
+                width: 140px; 
+                height: 140px; 
+                margin-bottom: 15px; 
+                margin-top: 5px; 
             }
             .profile-name {
-                font-size: 2.8em; /* Diperbesar agar terlihat jelas di HP */
+                font-size: 2.8em; 
             }
             .profile-handle {
-                font-size: 1.4em; /* Diperbesar agar terlihat jelas di HP */
+                font-size: 1.4em; 
             }
             .top-nav {
                 height: var(--nav-height);
                 padding: 0 10px;
-                justify-content: center; /* Pusatkan menu di mobile */
+                justify-content: center; 
             }
             .top-nav ul {
-                flex-wrap: wrap; /* Pastikan menu tetap melipat jika terlalu panjang */
+                flex-wrap: wrap; 
                 justify-content: center;
             }
             .top-nav ul li {
@@ -554,52 +551,52 @@
                 margin-bottom: 5px;
             }
             .top-nav ul li a {
-                font-size: 1em; /* Ukuran font navigasi tetap nyaman */
+                font-size: 1em; 
                 padding: 8px 12px;
             }
             .content-wrapper {
-                margin-top: 0; /* REMOVE NEGATIVE MARGIN */
+                margin-top: 0; 
                 padding: 15px;
             }
-            #entrance-screen img { /* Sesuaikan untuk HP */
+            #entrance-screen img { 
                 max-width: 250px; 
                 max-height: 250px;
             }
-            .profile-name .header-logo { /* Sesuaikan ukuran logo di header untuk HP */
+            .profile-name .header-logo { 
                 height: 0.8em;
             }
         }
 
         @media (max-width: 480px) {
             :root {
-                --header-initial-height: 380px; /* Diperbesar untuk HP kecil */
+                --header-initial-height: 380px; 
             }
             .profile-header {
                 height: var(--header-initial-height);
             }
             .profile-pic {
-                width: 120px; /* Diperbesar untuk HP kecil */
-                height: 120px; /* Diperbesar untuk HP kecil */
-                margin-top: 0; /* Sesuaikan juga di media query, mungkin tidak perlu margin di sini */
+                width: 120px; 
+                height: 120px; 
+                margin-top: 0; 
             }
             .profile-name {
-                font-size: 2.4em; /* Diperbesar untuk HP kecil */
+                font-size: 2.4em; 
             }
             .profile-handle {
-                font-size: 1.2em; /* Diperbesar untuk HP kecil */
+                font-size: 1.2em; 
             }
             .top-nav ul li a {
-                font-size: 0.9em; /* Sesuaikan lagi untuk HP sangat kecil */
+                font-size: 0.9em; 
                 padding: 6px 10px;
             }
             .content-wrapper {
-                margin-top: 0; /* REMOVE NEGATIVE MARGIN */
+                margin-top: 0; 
             }
-            #entrance-screen img { /* Sesuaikan untuk HP sangat kecil */
+            #entrance-screen img { 
                 max-width: 200px; 
                 max-height: 200px;
             }
-            .profile-name .header-logo { /* Sesuaikan ukuran logo di header untuk HP kecil */
+            .profile-name .header-logo { 
                 height: 0.7em;
             }
         }
@@ -757,8 +754,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             const entranceScreen = document.getElementById('entrance-screen');
             const bodyElement = document.body; 
-            const headerLogo = document.querySelector('.profile-name .header-logo'); // Dapatkan elemen logo di header
-            const verifiedBadge = document.querySelector('.profile-name .verified-badge'); // Dapatkan elemen verified badge
+            const headerLogo = document.querySelector('.profile-name .header-logo'); 
+            const verifiedBadge = document.querySelector('.profile-name .verified-badge'); 
             
             const sections = document.querySelectorAll('.main-content section');
             const navLinks = document.querySelectorAll('.top-nav a');
@@ -785,17 +782,15 @@
                 const offsetThreshold = getScrollOffset(); 
 
                 // Check if we are still within the header section
-                const headerBottom = headerElement.offsetHeight - navHeight; // Adjust for nav height
+                const headerBottom = headerElement.offsetHeight - navHeight; 
                 if (scrollY < headerBottom) {
                     currentActiveSectionId = 'top';
                 } else {
                     for (let i = sections.length - 1; i >= 0; i--) {
                         const section = sections[i];
-                        const sectionTop = section.getBoundingClientRect().top + scrollY; // Use scrollY
+                        const sectionTop = section.getBoundingClientRect().top + scrollY; 
                         const sectionBottom = sectionTop + section.offsetHeight;
 
-                        // Check if the current scroll position is within the section,
-                        // accounting for the fixed navigation bar
                         if (scrollY + offsetThreshold >= sectionTop && scrollY + offsetThreshold < sectionBottom) {
                             currentActiveSectionId = section.id;
                             break;
@@ -817,7 +812,6 @@
                 const scrollY = window.pageYOffset;
                 const headerInitialHeight = getCssVar('--header-initial-height');
                 
-                // Calculate opacity based on scroll
                 let opacityFactor = 1;
                 if (scrollY > fadeStartScroll) {
                     opacityFactor = 1 - (scrollY - fadeStartScroll) / (fadeEndScroll - fadeStartScroll);
@@ -828,12 +822,6 @@
 
                 backgroundImg.style.opacity = opacityFactor;
                 backgroundOverlay.style.opacity = opacityFactor;
-
-                // Make header sticky after scrolling past its initial height (minus nav height)
-                // if (scrollY > headerInitialHeight - navHeight) {
-                //     // You could add a class here to make the header background solid
-                //     // For this current setup, it already transitions to black with overlay
-                // }
             };
 
             const animateText = () => {
@@ -851,26 +839,31 @@
             });
 
             // --- Entrance Screen, Body Fade-in, and Header Logo Logic ---
+            // Set body opacity to 0 on initial load directly through JavaScript
+            // to ensure it starts hidden before any CSS is fully parsed or rendered.
+            bodyElement.style.opacity = '0'; 
+
             setTimeout(() => {
                 entranceScreen.classList.add('fade-out'); // Mulai fade-out entrance screen
-                // Setelah entrance screen mulai fade-out, biarkan sedikit waktu
-                // lalu mulai fade-in body dan tampilkan logo di header
+                
+                // Setelah entrance screen selesai fade-out (atau mendekati selesai), 
+                // biarkan sedikit waktu lalu mulai fade-in body dan tampilkan logo di header.
+                // Durasi ini harus setidaknya sama dengan transisi fade-out entranceScreen (1s),
+                // ditambah sedikit penundaan (misalnya 100ms) agar lebih mulus.
                 setTimeout(() => {
                     bodyElement.classList.add('fade-in'); // Mulai fade-in body
+                    
                     if (verifiedBadge) { // Sembunyikan badge verified jika ada
                         verifiedBadge.style.display = 'none';
                     }
                     if (headerLogo) { // Tampilkan dan fade-in logo di header
-                        headerLogo.style.display = 'inline-block'; // Pastikan terlihat
+                        headerLogo.style.visibility = 'visible'; // Buat terlihat agar transisi opacity bekerja
                         headerLogo.style.opacity = '1'; // Aktifkan transisi opacity
                     }
-                }, 500); // Penundaan 0.5 detik setelah entrance screen mulai fade-out
+                }, 1000); // Tunggu 1 detik (sesuai durasi transisi entrance-screen) untuk memulai fade-in body/logo header
             }, 1500); // Durasi sebelum fade-out entrance screen dimulai (1.5 detik)
 
             // Initial calls
-            // Pastikan body awalnya tersembunyi untuk transisi
-            bodyElement.style.opacity = '0'; 
-
             setActiveLink();
             handleHeaderScroll();
             animateText();
