@@ -13,47 +13,32 @@
             --blue-dark: #001a33;    /* Biru dongker gelap */
             --text-light: #f0f0f0;  /* Hampir putih */
             --text-dark: #333;      /* Abu-abu gelap */
-            --bg-dark: #000;        /* Hitam pekat */
+            --bg-dark: #000;         /* Hitam pekat */
             --link-color: #6a1b9a;  /* Ungu gelap */
             --link-hover: #9c27b0;  /* Ungu lebih terang */
-            --border-color: #555;   /* Abu-abu untuk border */
+            --border-color: #555;    /* Abu-abu untuk border */
             --dark-blue-hover-social: #000080; /* Biru dongker khusus untuk hover ikon sosial */
-            --header-initial-height: 675px; /* Tinggi header awal 1.5x lebih besar (450 * 1.5) */
+            --header-initial-height: 500px; /* Diperbesar Tinggi header awal */
             --nav-height: 60px; /* Tinggi menu navigasi atas */
             --fade-start-scroll: 50px; /* Jarak scroll sebelum fade dimulai */
             --fade-end-scroll: 300px; /* Jarak scroll saat fade selesai (gambar tidak terlihat) */
+            --nav-item-spacing: 20px; /* Spasi antar item navigasi default */
         }
 
-        /* Set scroll-padding-top pada root HTML untuk smooth scrolling yang akurat */
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: var(--nav-height); /* Offset untuk smooth scroll agar konten tidak tertutup oleh navbar fixed */
+            /* Offset untuk smooth scroll agar konten tidak tertutup oleh header sticky */
+            scroll-padding-top: var(--nav-height); 
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--bg-dark); /* Fallback color for background */
+            background-color: var(--bg-dark);
             color: var(--text-light);
             line-height: 1.6;
-            overflow-x: hidden; /* Mencegah scroll horizontal yang tidak diinginkan */
-
-            /* ===== Background GIF for Body (fixed and full page) ===== */
-            background-image: url('images/moving_fog.gif'); /* Pastikan path ini benar */
-            background-size: cover; /* Pastikan GIF menutupi seluruh area */
-            background-attachment: fixed; /* Membuat GIF tetap di tempat saat di-scroll (efek parallax) */
-            background-position: center; /* Pusatkan GIF */
-            background-repeat: no-repeat; /* Jangan ulang GIF */
-            
-            /* Default: GIF lebih redup */
-            filter: brightness(0.4); /* Menggelapkan GIF lebih banyak secara default */
-            transition: filter 0.5s ease-in-out; /* Transisi untuk efek brightness */
-        }
-
-        /* Class untuk mengaktifkan GIF di bagian bawah (lebih terang) */
-        body.body-bottom-active {
-            filter: brightness(1); /* GIF menjadi terang/full brightness */
+            overflow-x: hidden;
         }
 
         a {
@@ -68,9 +53,9 @@
 
         /* Header Section */
         .profile-header {
-            position: relative; /* Penting agar .profile-background-visual bisa absolute di dalamnya */
+            position: relative; /* Ini penting agar .profile-background-visual bisa absolute di dalamnya */
             width: 100%;
-            height: var(--header-initial-height); /* Tinggi header dari variabel */
+            height: var(--header-initial-height); /* Tinggi header awal */
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -82,6 +67,7 @@
             box-sizing: border-box;
             z-index: 50; /* Di bawah top-nav, di atas main-content */
             background-color: transparent; /* Awalnya transparan agar background halaman terlihat */
+            border-bottom: 5px solid #111; /* Border yang diubah */
         }
 
         /* Container untuk background image dan overlay di header */
@@ -91,7 +77,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--blue-dominant); /* Fallback jika gambar header gagal dimuat */
+            background-color: var(--blue-dominant); /* Warna fallback jika gambar tidak dimuat */
             overflow: hidden;
             z-index: -1; /* Di belakang konten teks/gambar profil */
         }
@@ -101,9 +87,9 @@
             height: 100%;
             object-fit: cover;
             object-position: center top;
-            filter: brightness(0.6) contrast(1.3); /* Filter khusus untuk gambar header */
-            opacity: 1;
-            transition: opacity 0.1s ease-out;
+            filter: brightness(0.6) contrast(1.3); /* Sedikit gelap dan kontras */
+            opacity: 1; /* Opasitas awal */
+            transition: opacity 0.1s ease-out; /* Transisi untuk efek fade */
         }
 
         .profile-background-visual .background-overlay {
@@ -113,28 +99,30 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.1));
-            opacity: 1;
-            transition: opacity 0.1s ease-out;
+            opacity: 1; /* Opasitas awal */
+            transition: opacity 0.1s ease-out; /* Transisi untuk efek fade */
         }
 
         /* Konten di dalam header (foto, nama, handle) */
         .profile-content {
             position: relative;
             z-index: 10;
+            font-size: 16px; /* Font dasar untuk .profile-content */
         }
 
         .profile-pic {
-            width: 150px;
-            height: 150px;
+            width: 180px; /* Diperbesar */
+            height: 180px; /* Diperbesar */
             border-radius: 50%;
             border: 5px solid var(--text-light);
             object-fit: cover;
-            margin-bottom: 15px;
+            margin-bottom: 20px; /* Diperbesar */
+            margin-top: 15px; /* Menurunkan posisi foto profil */
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
         }
 
         .profile-name {
-            font-size: 2.8em;
+            font-size: 3.5em; /* Diperbesar agar lebih menonjol di desktop & mobile */
             margin: 10px 0 5px 0;
             font-weight: bold;
             display: flex;
@@ -145,7 +133,7 @@
         .verified-badge {
             color: #4CAF50;
             margin-left: 10px;
-            font-size: 0.9em;
+            font-size: 0.8em; /* Relatif terhadap font-size .profile-name */
         }
 
         .profile-name .fas.fa-check-circle {
@@ -153,14 +141,14 @@
         }
 
         .profile-handle {
-            font-size: 1.3em;
+            font-size: 1.6em; /* Diperbesar */
             color: #aaa;
-            margin-top: 0;
-            min-height: 1.3em; /* Pastikan tinggi cukup untuk teks terpanjang */
+            margin-top: 5px; /* Diperbesar */
+            min-height: 1.6em; /* Pastikan tinggi cukup untuk teks terpanjang */
             transition: opacity 0.5s ease-in-out; /* Efek fade untuk animasi teks */
         }
 
-        /* Top Right Navigation (Fixed at top) */
+        /* Top Right Navigation */
         .top-nav {
             position: fixed; /* Menempel di viewport */
             top: 0; /* Di bagian paling atas */
@@ -216,8 +204,7 @@
             justify-content: center; /* Pusatkan konten utama */
             padding: 20px; /* Padding di sekitar konten */
             box-sizing: border-box;
-            /* Adjust margin-top to account for header height so content starts after header */
-            margin-top: calc(var(--header-initial-height) - 100px); /* Disesuaikan agar konten tidak menimpa header dan tidak ada gap terlalu besar */
+            margin-top: -100px; /* Menaikkan konten ke atas agar tidak ada gap besar dari header */
             position: relative;
             z-index: 10; /* Pastikan di atas footer, di bawah top-nav */
         }
@@ -227,7 +214,7 @@
             max-width: 800px;
             width: 100%;
             padding: 30px;
-            background-color: #111; /* Tetap solid agar GIF background tidak menembus konten */
+            background-color: #111;
             border-radius: 10px;
             box-shadow: 0 5px 30px rgba(0, 0, 0, 0.6);
         }
@@ -359,8 +346,8 @@
         /* Experience and Services Cards */
         .card-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
             margin-top: 30px;
         }
 
@@ -423,148 +410,114 @@
             padding: 20px 0;
             font-size: 0.9em;
             border-top: 1px solid #222;
-            z-index: 999;
+            z-index: 999; /* Pastikan di atas semua konten saat fixed jika diperlukan */
         }
 
         /* Responsive Adjustments */
         @media (max-width: 992px) {
-            .profile-header {
-                height: 600px; /* 400 * 1.5 */
-                padding: 30px 15px;
+            :root {
+                --header-initial-height: 450px; /* Sesuaikan untuk tablet */
             }
-            .profile-name {
-                font-size: 2.5em;
+            .profile-header {
+                height: var(--header-initial-height);
+                padding: 40px 15px; /* Padding lebih besar */
             }
             .profile-pic {
-                width: 130px;
-                height: 130px;
+                width: 160px;
+                height: 160px;
+                margin-top: 10px; /* Sesuaikan juga di media query */
+            }
+            .profile-name {
+                font-size: 3em; /* Tetap besar untuk tablet */
+            }
+            .profile-handle {
+                font-size: 1.4em;
             }
             .top-nav {
                 height: var(--nav-height);
                 padding: 0 15px;
             }
             .top-nav ul li {
-                margin-left: calc(var(--nav-item-spacing) / 1.5);
+                margin-left: var(--nav-item-spacing); /* Jaga spasi yang cukup */
             }
             .top-nav ul li a {
-                font-size: 1em;
-                padding: 8px 12px;
-            }
-            .main-content {
-                padding: 25px;
-            }
-            .card-container {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 25px;
+                font-size: 1.1em;
+                padding: 10px 15px;
             }
         }
 
         @media (max-width: 768px) {
             :root {
-                --header-initial-height: 525px; /* 350 * 1.5 */
-                --nav-height: 50px;
-                --nav-item-spacing: 10px;
+                --header-initial-height: 400px; /* Diperbesar untuk HP */
+                --nav-height: 60px; /* Diperbesar navigasi agar tidak terlalu kecil */
+                --nav-item-spacing: 15px; /* Spasi antar item navigasi */
             }
             html {
                 scroll-padding-top: var(--nav-height);
             }
-            /* Menghapus filter default di mobile agar kompatibilitas lebih baik (GIF mungkin tidak bergerak dengan filter) */
-            body {
-                filter: none; 
-            }
-            /* Class untuk mengaktifkan GIF di bagian bawah (lebih terang) di mobile */
-            body.body-bottom-active {
-                filter: brightness(1); /* Tetap aktifkan brightness penuh di mobile jika kelas diterapkan */
-            }
-
             .profile-header {
                 height: var(--header-initial-height);
-                padding: 20px 10px;
+                padding: 30px 10px; /* Padding lebih besar */
             }
             .profile-pic {
-                width: 120px; /* Diperbesar sedikit di 768px dari 100px sebelumnya */
-                height: 120px;
+                width: 140px; /* Diperbesar untuk HP */
+                height: 140px; /* Diperbesar untuk HP */
+                margin-bottom: 15px; /* Sesuaikan margin */
+                margin-top: 5px; /* Sesuaikan juga di media query */
             }
             .profile-name {
-                font-size: 2em;
+                font-size: 2.8em; /* Diperbesar agar terlihat jelas di HP */
             }
             .profile-handle {
-                font-size: 1.1em;
+                font-size: 1.4em; /* Diperbesar agar terlihat jelas di HP */
             }
             .top-nav {
                 height: var(--nav-height);
                 padding: 0 10px;
-                justify-content: center;
+                justify-content: center; /* Pusatkan menu di mobile */
             }
             .top-nav ul {
-                flex-wrap: wrap;
+                flex-wrap: wrap; /* Pastikan menu tetap melipat jika terlalu panjang */
                 justify-content: center;
             }
             .top-nav ul li {
-                margin-left: calc(var(--nav-item-spacing) / 2);
+                margin-left: var(--nav-item-spacing);
                 margin-bottom: 5px;
             }
             .top-nav ul li a {
-                font-size: 0.9em;
-                padding: 6px 10px;
+                font-size: 1em; /* Ukuran font navigasi tetap nyaman */
+                padding: 8px 12px;
             }
             .content-wrapper {
-                /* Sesuaikan margin-top agar konten tepat di bawah header di mobile */
-                margin-top: calc(var(--header-initial-height) - 100px); 
-                padding: 10px;
-            }
-            .main-content {
-                padding: 20px;
-            }
-            .social-icons a {
-                width: 50px;
-                height: 50px;
-                font-size: 1.6em;
-                gap: 15px;
-            }
-            .link-button {
-                padding: 12px 25px;
-                font-size: 1em;
-            }
-            .card-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            .about-section h2 {
-                font-size: 2em;
-            }
-            .about-section h3 {
-                font-size: 1.6em;
-            }
-            .about-section p, .about-section ul, .about-section li {
-                font-size: 1em;
+                margin-top: -100px; /* Kembalikan ke nilai yang lebih normal agar tidak terlalu jauh */
+                padding: 15px;
             }
         }
 
         @media (max-width: 480px) {
             :root {
-                --header-initial-height: 450px; /* 300 * 1.5 */
+                --header-initial-height: 380px; /* Diperbesar untuk HP kecil */
             }
             .profile-header {
                 height: var(--header-initial-height);
             }
             .profile-pic {
-                width: 100px; /* Diperbesar sedikit di 480px dari 80px sebelumnya */
-                height: 100px;
+                width: 120px; /* Diperbesar untuk HP kecil */
+                height: 120px; /* Diperbesar untuk HP kecil */
+                margin-top: 0; /* Sesuaikan juga di media query, mungkin tidak perlu margin di sini */
             }
             .profile-name {
-                font-size: 1.8em;
+                font-size: 2.4em; /* Diperbesar untuk HP kecil */
             }
             .profile-handle {
-                font-size: 1em;
+                font-size: 1.2em; /* Diperbesar untuk HP kecil */
             }
             .top-nav ul li a {
-                font-size: 0.8em;
-                padding: 5px 8px;
+                font-size: 0.9em; /* Sesuaikan lagi untuk HP sangat kecil */
+                padding: 6px 10px;
             }
             .content-wrapper {
-                /* Sesuaikan margin-top untuk HP sangat kecil */
-                margin-top: calc(var(--header-initial-height) - 100px); 
+                margin-top: -80px; /* Sesuaikan lagi */
             }
         }
     </style>
@@ -613,7 +566,13 @@
             <section id="about" class="about-section">
                 <h2>About Me</h2>
                 <p>I'm passionate about building something new, simple, always creating something that is best, good attitude, kind, communicative, diligent, tolerant, target oriented, discipline, honest, responsible and able to work individually or in a team.</p>
-                <a href="#" class="link-button"><i class="fas fa-download"></i> Download CV</a>
+                <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 20px; margin-bottom: 20px;">
+                    <p style="flex: 1 1 45%; min-width: 150px;"><strong>Projects Completed:</strong> 28</p>
+                    <p style="flex: 1 1 45%; min-width: 150px;"><strong>Cup of Coffee:</strong> 70+</p>
+                    <p style="flex: 1 1 45%; min-width: 150px;"><strong>Satisfied Clients:</strong> 18</p>
+                    <p style="flex: 1 1 45%; min-width: 150px;"><strong>Design Completed:</strong> 10+</p>
+                </div>
+                <a href="CV IT Support - Muhammad Ridho Ali Akbar.pdf" download="CV IT Support - Muhammad Ridho Ali Akbar.pdf" class="link-button"><i class="fas fa-download"></i> Download CV</a>
 
                 <h3 style="margin-top: 40px;">Skills</h3>
                 <div class="skill-item">
@@ -650,37 +609,23 @@
                 <h2>Services</h2>
                 <div class="card-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
                     <div class="card">
-                        <div class="card-icon"><i class="fas fa-code"></i></div>
-                        <h3>Web Development</h3>
+                        <div class="card-icon"><i class="fas fa-laptop-code"></i></div> <h3>Web Development</h3>
                         <p>Implement designs made with the best programming languages, ensuring robust and scalable web applications.</p>
                     </div>
                     <div class="card">
-                        <div class="card-icon"><i class="fas fa-paint-brush"></i></div>
-                        <h3>UI/UX Design</h3>
-                        <p>Design intuitive and visually appealing user interfaces for exceptional user experience.</p>
+                        <div class="card-icon"><i class="fas fa-headset"></i></div> <h3>Computer Technical Support</h3>
+                        <p>Emphasizes the support aspect, often referring to help provided by a professional for technical issues on any type of computer.</p>
                     </div>
                     <div class="card">
-                        <div class="card-icon"><i class="fas fa-rocket"></i></div>
-                        <h3>SEO Optimization</h3>
-                        <p>Maximize search engine visibility and drive organic traffic through effective SEO strategies.</p>
+                        <div class="card-icon"><i class="fas fa-network-wired"></i></div> <h3>Network Implementation</h3>
+                        <p>Comprehensive process of planning, designing, configuring, and installing a computer network to meet specific organizational requirements.</p>
                     </div>
                     <div class="card">
-                        <div class="card-icon"><i class="fas fa-mobile-alt"></i></div>
-                        <h3>Mobile App Development</h3>
-                        <p>Build native or cross-platform mobile applications for iOS and Android.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon"><i class="fas fa-database"></i></div>
-                        <h3>Database Management</h3>
-                        <p>Design, implement, and manage efficient and secure database systems.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon"><i class="fas fa-cloud"></i></div>
-                        <h3>Cloud Solutions</h3>
-                        <p>Leverage cloud platforms for scalable and reliable infrastructure.</p>
+                        <div class="card-icon"><i class="fas fa-dolly"></i></div> <h3>IT Equipment Procurement</h3>
+                        <p>Formal process of acquiring information technology hardware and related assets for an organization to meet its operational needs.</p>
                     </div>
                 </div>
-                <p style="margin-top: 20px; text-align: center;">Looking for a custom job? <a href="https://wa.me/6285173173716" target="_blank" style="color: var(--link-color);">+62 851-7317-3716</a> to contact me! <i class="fas fa-hand-wave"></i></p>
+                <p style="margin-top: 20px; text-align: center;">Looking for a custom job? <a href="https://wa.me/6285173173716" target="_blank" style="color: var(--link-color);">click here</a> to contact me! <i class="fas fa-hand-wave"></i></p>
             </section>
 
             <section id="experience" class="about-section">
@@ -708,12 +653,12 @@
                 <h2>Education</h2>
                 <div class="card-container" style="display: flex; flex-direction: column; gap: 20px;">
                     <div class="card experience">
-                        <p style="font-weight: bold; color: var(--blue-dominant);">2017 - 2021</p>
+                        <p style="font-weight: bold; color: var(--blue-dominant);">2021 - Present</p>
                         <h3>Bachelor Degree, Information Systems <span style="font-weight: normal; color: #ccc;">• Universitas Indraprasta PGRI</span></h3>
                         <p>Focused on understanding information systems, software development methodologies, and database management.</p>
                     </div>
                     <div class="card experience">
-                        <p style="font-weight: bold; color: var(--blue-dominant);">2012 - 2015</p>
+                        <p style="font-weight: bold; color: var(--blue-dominant);">2015 - 2018</p>
                         <h3>Computer Software Engineering <span style="font-weight: normal; color: #ccc;">• SMK Muhammadiyah 4 Jakarta</span></h3>
                         <p>Vocational high school education specializing in computer software engineering, providing a strong foundation in programming and IT fundamentals.</p>
                     </div>
@@ -736,20 +681,14 @@
             const backgroundOverlay = document.querySelector('.profile-background-visual .background-overlay');
             const profileHandle = document.querySelector('.profile-handle');
             
-            // Elemen body untuk mengaktifkan/menonaktifkan efek brightness pada background GIF
-            const bodyElement = document.body; 
-
-            // Teks yang akan dirotasi
             const rotatingTexts = ["IT Support", "Web Developer", "Trainer", "Network Support & Troubleshooting"];
             let currentTextIndex = 0;
 
-            // Mengambil nilai variabel CSS secara dinamis
             const getCssVar = (varName) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(varName));
             const fadeStartScroll = getCssVar('--fade-start-scroll');
             const fadeEndScroll = getCssVar('--fade-end-scroll');
             const navHeight = getCssVar('--nav-height');
 
-            // Fungsi untuk menghitung offset scroll yang akurat
             const getScrollOffset = () => {
                 return navHeight; 
             };
@@ -784,7 +723,6 @@
                 });
             };
 
-            // Fungsi untuk efek fade background header
             const handleHeaderScroll = () => {
                 const scrollY = window.pageYOffset;
 
@@ -800,7 +738,6 @@
                 backgroundOverlay.style.opacity = opacityFactor;
             };
 
-            // Fungsi untuk animasi teks dengan efek fade
             const animateText = () => {
                 profileHandle.style.opacity = 0;
                 setTimeout(() => {
@@ -810,38 +747,14 @@
                 }, 500);
             };
 
-            // Fungsi untuk mengontrol background GIF di bagian bawah
-            const handleBottomBackground = () => {
-                // Mendapatkan tinggi total dokumen yang bisa di-scroll
-                const documentHeight = document.body.scrollHeight;
-                // Mendapatkan tinggi viewport
-                const viewportHeight = window.innerHeight;
-                // Posisi scroll dari atas
-                const currentScrollY = window.scrollY;
-
-                // Hitung seberapa dekat ke bawah, misalnya 150px dari bagian paling bawah
-                const distanceFromBottom = documentHeight - (currentScrollY + viewportHeight);
-                const activationThreshold = 150; // Jarak dari bawah untuk mengaktifkan efek
-
-                if (distanceFromBottom <= activationThreshold) {
-                    bodyElement.classList.add('body-bottom-active');
-                } else {
-                    bodyElement.classList.remove('body-bottom-active');
-                }
-            };
-
-            // Event Listeners
             window.addEventListener('scroll', () => {
                 setActiveLink();
                 handleHeaderScroll();
-                handleBottomBackground(); // Panggil fungsi ini setiap kali scroll
             });
 
-            // Panggil fungsi saat halaman dimuat pertama kali
             setActiveLink();
             handleHeaderScroll();
             animateText();
-            handleBottomBackground(); // Panggil saat load untuk posisi awal
 
             setInterval(animateText, 2000);
         });
