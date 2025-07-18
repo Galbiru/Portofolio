@@ -74,8 +74,9 @@
         }
 
         #entrance-screen img {
-            max-width: 200px; /* Adjust logo size as needed */
-            max-height: 200px;
+            /* Perubahan di sini untuk membuat gambar 2x lebih besar */
+            max-width: 400px; /* Ukuran sebelumnya 200px * 2 = 400px */
+            max-height: 400px; /* Ukuran sebelumnya 200px * 2 = 400px */
             animation: pulse 1.5s infinite alternate; /* Simple animation for the logo */
         }
 
@@ -478,6 +479,10 @@
                 font-size: 1.1em;
                 padding: 10px 15px;
             }
+            #entrance-screen img { /* Sesuaikan untuk tablet */
+                max-width: 300px; 
+                max-height: 300px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -529,6 +534,10 @@
                 margin-top: 0; /* REMOVE NEGATIVE MARGIN */
                 padding: 15px;
             }
+            #entrance-screen img { /* Sesuaikan untuk HP */
+                max-width: 250px; 
+                max-height: 250px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -555,6 +564,10 @@
             }
             .content-wrapper {
                 margin-top: 0; /* REMOVE NEGATIVE MARGIN */
+            }
+            #entrance-screen img { /* Sesuaikan untuk HP sangat kecil */
+                max-width: 200px; 
+                max-height: 200px;
             }
         }
     </style>
