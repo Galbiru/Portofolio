@@ -71,13 +71,19 @@
             align-items: center;
             z-index: 9999; /* Ensure it's on top of everything */
             opacity: 1;
-            transition: opacity 1s ease-out, visibility 0s 1s; /* Fade out, lalu sembunyikan setelah transisi */
+            /* Transisi fade out untuk opacity, lalu sembunyikan sepenuhnya setelahnya */
+            transition: opacity 1s ease-out; 
+            /* Tambahan untuk memastikan tidak ada interaksi setelah fade-out */
+            pointer-events: auto; /* Awalnya aktif */
+            visibility: visible; /* Awalnya terlihat */
         }
 
         #entrance-screen.fade-out {
             opacity: 0;
+            /* Setelah opacity 0, baru ubah visibility dan pointer-events */
+            transition: opacity 1s ease-out, visibility 0s 1s, pointer-events 0s 1s; 
             visibility: hidden; /* Sembunyikan setelah fade out */
-            pointer-events: none; /* Nonaktifkan interaksi mouse */
+            pointer-events: none; /* Nonaktifkan interaksi mouse setelah fade out */
         }
 
         #entrance-screen img {
@@ -757,6 +763,7 @@
             const headerLogo = document.querySelector('.profile-name .header-logo'); 
             const verifiedBadge = document.querySelector('.profile-name .verified-badge'); 
             
+            // Variabel lain yang Anda gunakan
             const sections = document.querySelectorAll('.main-content section');
             const navLinks = document.querySelectorAll('.top-nav a');
             const headerElement = document.getElementById('top');
@@ -781,7 +788,6 @@
                 const scrollY = window.pageYOffset;
                 const offsetThreshold = getScrollOffset(); 
 
-                // Check if we are still within the header section
                 const headerBottom = headerElement.offsetHeight - navHeight; 
                 if (scrollY < headerBottom) {
                     currentActiveSectionId = 'top';
@@ -839,35 +845,35 @@
             });
 
             // --- Entrance Screen, Body Fade-in, and Header Logo Logic ---
-            // Set body opacity to 0 on initial load directly through JavaScript
-            // to ensure it starts hidden before any CSS is fully parsed or rendered.
+            // Penting: Set opacity body menjadi 0 sebelum DOM sepenuhnya dimuat/dirender
+            // Ini mencegah "flash" konten sebelum entrance screen muncul
             bodyElement.style.opacity = '0'; 
 
             setTimeout(() => {
                 entranceScreen.classList.add('fade-out'); // Mulai fade-out entrance screen
                 
-                // Setelah entrance screen selesai fade-out (atau mendekati selesai), 
-                // biarkan sedikit waktu lalu mulai fade-in body dan tampilkan logo di header.
-                // Durasi ini harus setidaknya sama dengan transisi fade-out entranceScreen (1s),
-                // ditambah sedikit penundaan (misalnya 100ms) agar lebih mulus.
+                // Atur timeout ini agar selaras dengan durasi transisi entranceScreen
+                // Setelah entranceScreen selesai fade-out (1 detik), baru panggil callback ini
                 setTimeout(() => {
                     bodyElement.classList.add('fade-in'); // Mulai fade-in body
                     
-                    if (verifiedBadge) { // Sembunyikan badge verified jika ada
+                    // Sembunyikan badge verified jika ada dan tampilkan logo header
+                    if (verifiedBadge) { 
                         verifiedBadge.style.display = 'none';
                     }
-                    if (headerLogo) { // Tampilkan dan fade-in logo di header
+                    if (headerLogo) { 
                         headerLogo.style.visibility = 'visible'; // Buat terlihat agar transisi opacity bekerja
                         headerLogo.style.opacity = '1'; // Aktifkan transisi opacity
                     }
-                }, 1000); // Tunggu 1 detik (sesuai durasi transisi entrance-screen) untuk memulai fade-in body/logo header
+                }, 1000); // Penundaan ini harus setidaknya sama dengan durasi transisi 'opacity' entranceScreen
             }, 1500); // Durasi sebelum fade-out entrance screen dimulai (1.5 detik)
 
-            // Initial calls
+            // Panggilan awal untuk fungsi-fungsi utama
             setActiveLink();
             handleHeaderScroll();
             animateText();
 
+            // Interval untuk animasi teks handle
             setInterval(animateText, 2000);
         });
     </script>
