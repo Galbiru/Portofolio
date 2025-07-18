@@ -51,6 +51,39 @@
             color: var(--link-hover);
         }
 
+        /* --- Entrance Screen Styling --- */
+        #entrance-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-dark); /* Match body background or choose another */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Ensure it's on top of everything */
+            opacity: 1;
+            transition: opacity 1s ease-out; /* Fade out transition */
+        }
+
+        #entrance-screen.fade-out {
+            opacity: 0;
+            visibility: hidden; /* Hide after fade out to allow interaction */
+            pointer-events: none; /* Disable interaction during fade out */
+        }
+
+        #entrance-screen img {
+            max-width: 200px; /* Adjust logo size as needed */
+            max-height: 200px;
+            animation: pulse 1.5s infinite alternate; /* Simple animation for the logo */
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
         /* Header Section */
         .profile-header {
             position: relative; /* Ini penting agar .profile-background-visual bisa absolute di dalamnya */
@@ -527,6 +560,9 @@
     </style>
 </head>
 <body>
+    <div id="entrance-screen">
+        <img src="logo.png" alt="Logo">
+    </div>
 
     <header id="top" class="profile-header">
         <div class="profile-background-visual">
@@ -563,6 +599,7 @@
                     <a href="https://wa.me/6285173173716" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                     <a href="https://www.instagram.com/galbiru" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="https://www.linkedin.com/in/yourlinkedin" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://github.com/Galbiru" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
                     <a href="mailto:muhammadridhoaliakbar1@gmail.com" target="_blank" aria-label="Email"><i class="fas fa-envelope"></i></a>
                 </div>
             </section>
@@ -672,6 +709,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const entranceScreen = document.getElementById('entrance-screen');
             const sections = document.querySelectorAll('.main-content section');
             const navLinks = document.querySelectorAll('.top-nav a');
             const headerElement = document.getElementById('top');
@@ -761,6 +799,11 @@
                 setActiveLink();
                 handleHeaderScroll();
             });
+
+            // --- Entrance Screen Logic ---
+            setTimeout(() => {
+                entranceScreen.classList.add('fade-out');
+            }, 1500); // Duration before fade-out starts (1.5 seconds)
 
             // Initial calls
             setActiveLink();
