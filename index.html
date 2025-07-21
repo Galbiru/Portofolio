@@ -16,7 +16,7 @@
             --bg-dark: #000;       /* Hitam pekat */
             --link-color: #6a1b9a;  /* Ungu gelap */
             --link-hover: #9c27b0;  /* Ungu lebih terang */
-            --border-color: #555;    /* Abu-abu untuk border */
+            --border-color: #555;   /* Abu-abu untuk border */
             --dark-blue-hover-social: #000080; /* Biru dongker khusus untuk hover ikon sosial */
             --header-initial-height: 500px; /* Diperbesar Tinggi header awal */
             --nav-height: 60px; /* Tinggi menu navigasi atas */
@@ -39,7 +39,7 @@
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
-            /* overflow: hidden; Tambahkan ini untuk menyembunyikan scrollbar saat entrance */
+            overflow: hidden; /* Tambahkan ini untuk menyembunyikan scrollbar saat entrance */
         }
 
         a {
@@ -70,7 +70,6 @@
 
         #entrance-overlay.fade-out {
             opacity: 0;
-            visibility: hidden; /* Sembunyikan sepenuhnya setelah fade out */
         }
 
         #entrance-logo {
@@ -800,7 +799,11 @@
             // Entrance animation logic
             setTimeout(() => {
                 entranceOverlay.classList.add('fade-out');
-                // document.body.style.overflow = 'auto'; // Mengembalikan scroll setelah entrance
+                // Setelah transisi fade-out selesai, atur display menjadi none
+                entranceOverlay.addEventListener('transitionend', () => {
+                    entranceOverlay.style.display = 'none';
+                    document.body.style.overflow = 'auto'; // Mengembalikan scroll setelah entrance
+                }, { once: true }); // Menggunakan { once: true } agar event listener hanya dijalankan sekali
             }, 2000); // Logo akan memudar setelah 2 detik (sesuaikan jika perlu)
 
             window.addEventListener('scroll', () => {
