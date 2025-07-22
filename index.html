@@ -16,7 +16,7 @@
             --bg-dark: #000;       /* Hitam pekat */
             --link-color: #6a1b9a;  /* Ungu gelap */
             --link-hover: #9c27b0;  /* Ungu lebih terang */
-            --border-color: #555;   /* Abu-abu untuk border */
+            --border-color: #555;    /* Abu-abu untuk border */
             --dark-blue-hover-social: #000080; /* Biru dongker khusus untuk hover ikon sosial */
             --header-initial-height: 500px; /* Diperbesar Tinggi header awal */
             --nav-height: 60px; /* Tinggi menu navigasi atas */
@@ -27,19 +27,18 @@
 
         html {
             scroll-behavior: smooth;
-            /* Offset untuk smooth scroll agar konten tidak tertutup oleh header sticky */
             scroll-padding-top: var(--nav-height); 
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding-top: var(--nav-height); /* Add padding to body equal to nav height */
+            padding-top: var(--nav-height);
             background-color: var(--bg-dark);
             color: var(--text-light);
             line-height: 1.6;
             overflow-x: hidden;
-            overflow: hidden; /* Tambahkan ini untuk menyembunyikan scrollbar saat entrance */
+            /* overflow: hidden; */ /* Uncomment this if you want to hide scrollbar initially */
         }
 
         a {
@@ -59,23 +58,24 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--bg-dark); /* Latar belakang hitam penuh */
+            background-color: var(--bg-dark);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 9999; /* Pastikan di atas semua konten */
+            z-index: 9999;
             opacity: 1;
-            transition: opacity 1s ease-out; /* Transisi untuk fade out */
+            transition: opacity 1s ease-out;
         }
 
         #entrance-overlay.fade-out {
             opacity: 0;
+            visibility: hidden;
         }
 
         #entrance-logo {
-            max-width: 250px; /* Sesuaikan ukuran logo (sekitar 2x lebih besar dari ukuran kecil sebelumnya) */
+            max-width: 250px;
             height: auto;
-            animation: zoomIn 1s ease-out forwards; /* Animasi zoom masuk */
+            animation: zoomIn 1s ease-out forwards;
         }
 
         @keyframes zoomIn {
@@ -90,37 +90,34 @@
         }
         /* --- End Entrance Overlay --- */
 
-
         /* Header Section */
         .profile-header {
-            position: relative; /* Ini penting agar .profile-background-visual bisa absolute di dalamnya */
+            position: relative;
             width: 100%;
-            height: var(--header-initial-height); /* Tinggi header awal */
+            height: var(--header-initial-height);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Konten di tengah vertikal */
+            justify-content: center;
             align-items: center;
             text-align: center;
             color: var(--text-light);
-            padding: 40px 20px; /* Padding untuk konten dalam header */
+            padding: 40px 20px;
             box-sizing: border-box;
-            z-index: 50; /* Di bawah top-nav, di atas main-content */
-            background-color: transparent; /* Awalnya transparan agar background halaman terlihat */
-            border-bottom: 5px solid #111; /* Border yang diubah */
-            /* Remove fixed positioning from header */
+            z-index: 50;
+            background-color: transparent;
+            border-bottom: 5px solid #111;
         }
 
-        /* Container untuk background image dan overlay di header */
         .profile-background-visual {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--blue-dominant); /* Warna fallback jika gambar tidak dimuat */
+            background-color: var(--blue-dominant);
             overflow: hidden;
-            z-index: -1; /* Di belakang konten teks/gambar profil */
+            z-index: -1;
         }
 
         .profile-background-visual .background-img {
@@ -128,9 +125,9 @@
             height: 100%;
             object-fit: cover;
             object-position: center top;
-            filter: brightness(0.6) contrast(1.3); /* Sedikit gelap dan kontras */
-            opacity: 1; /* Opasitas awal */
-            transition: opacity 0.1s ease-out; /* Transisi untuk efek fade */
+            filter: brightness(0.6) contrast(1.3);
+            opacity: 1;
+            transition: opacity 0.1s ease-out;
         }
 
         .profile-background-visual .background-overlay {
@@ -140,30 +137,29 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.1));
-            opacity: 1; /* Opasitas awal */
-            transition: opacity 0.1s ease-out; /* Transisi untuk efek fade */
+            opacity: 1;
+            transition: opacity 0.1s ease-out;
         }
 
-        /* Konten di dalam header (foto, nama, handle) */
         .profile-content {
             position: relative;
             z-index: 10;
-            font-size: 16px; /* Font dasar untuk .profile-content */
+            font-size: 16px;
         }
 
         .profile-pic {
-            width: 180px; /* Diperbesar */
-            height: 180px; /* Diperbesar */
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             border: 5px solid var(--text-light);
             object-fit: cover;
-            margin-bottom: 20px; /* Diperbesar */
-            margin-top: 15px; /* Menurunkan posisi foto profil */
+            margin-bottom: 20px;
+            margin-top: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
         }
 
         .profile-name {
-            font-size: 3.5em; /* Diperbesar agar lebih menonjol di desktop & mobile */
+            font-size: 3.5em;
             margin: 10px 0 5px 0;
             font-weight: bold;
             display: flex;
@@ -174,7 +170,7 @@
         .verified-badge {
             color: #4CAF50;
             margin-left: 10px;
-            font-size: 0.8em; /* Relatif terhadap font-size .profile-name */
+            font-size: 0.8em;
         }
 
         .profile-name .fas.fa-check-circle {
@@ -182,28 +178,28 @@
         }
 
         .profile-handle {
-            font-size: 1.6em; /* Diperbesar */
+            font-size: 1.6em;
             color: #aaa;
-            margin-top: 5px; /* Diperbesar */
-            min-height: 1.6em; /* Pastikan tinggi cukup untuk teks terpanjang */
-            transition: opacity 0.5s ease-in-out; /* Efek fade untuk animasi teks */
+            margin-top: 5px;
+            min-height: 1.6em;
+            transition: opacity 0.5s ease-in-out;
         }
 
         /* Top Right Navigation */
         .top-nav {
-            position: fixed; /* Menempel di viewport */
-            top: 0; /* Di bagian paling atas */
-            left: 0; /* Membentang penuh */
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            background-color: var(--bg-dark); /* Latar belakang menu */
-            padding: 0 20px; /* Padding horizontal */
+            background-color: var(--bg-dark);
+            padding: 0 20px;
             box-sizing: border-box;
             display: flex;
-            justify-content: flex-end; /* Rata kanan */
+            justify-content: flex-end;
             align-items: center;
-            height: var(--nav-height); /* Tinggi menu */
-            z-index: 1000; /* Pastikan di atas semua elemen lain */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Shadow tipis */
+            height: var(--nav-height);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .top-nav ul {
@@ -215,7 +211,7 @@
         }
 
         .top-nav ul li {
-            margin-left: var(--nav-item-spacing); /* Spasi antar item */
+            margin-left: var(--nav-item-spacing);
         }
 
         .top-nav ul li:first-child {
@@ -242,12 +238,12 @@
         /* Main Content Wrapper (Menampung main-content) */
         .content-wrapper {
             display: flex;
-            justify-content: center; /* Pusatkan konten utama */
-            padding: 20px; /* Padding di sekitar konten */
+            justify-content: center;
+            padding: 20px;
             box-sizing: border-box;
-            margin-top: 0; /* REMOVE NEGATIVE MARGIN */
+            margin-top: 0;
             position: relative;
-            z-index: 10; /* Pastikan di atas footer, di bawah top-nav */
+            z-index: 10;
         }
 
         /* Main Content Area */
@@ -451,25 +447,25 @@
             padding: 20px 0;
             font-size: 0.9em;
             border-top: 1px solid #222;
-            z-index: 999; /* Pastikan di atas semua konten saat fixed jika diperlukan */
+            z-index: 999;
         }
 
         /* Responsive Adjustments */
         @media (max-width: 992px) {
             :root {
-                --header-initial-height: 450px; /* Sesuaikan untuk tablet */
+                --header-initial-height: 450px;
             }
             .profile-header {
                 height: var(--header-initial-height);
-                padding: 40px 15px; /* Padding lebih besar */
+                padding: 40px 15px;
             }
             .profile-pic {
                 width: 160px;
                 height: 160px;
-                margin-top: 10px; /* Sesuaikan juga di media query */
+                margin-top: 10px;
             }
             .profile-name {
-                font-size: 3em; /* Tetap besar untuk tablet */
+                font-size: 3em;
             }
             .profile-handle {
                 font-size: 1.4em;
@@ -479,7 +475,7 @@
                 padding: 0 15px;
             }
             .top-nav ul li {
-                margin-left: var(--nav-item-spacing); /* Jaga spasi yang cukup */
+                margin-left: var(--nav-item-spacing);
             }
             .top-nav ul li a {
                 font-size: 1.1em;
@@ -489,39 +485,39 @@
 
         @media (max-width: 768px) {
             :root {
-                --header-initial-height: 400px; /* Diperbesar untuk HP */
-                --nav-height: 60px; /* Diperbesar navigasi agar tidak terlalu kecil */
-                --nav-item-spacing: 15px; /* Spasi antar item navigasi */
+                --header-initial-height: 400px;
+                --nav-height: 60px;
+                --nav-item-spacing: 15px;
             }
             html {
                 scroll-padding-top: var(--nav-height);
             }
             body {
-                padding-top: var(--nav-height); /* Ensure padding top is applied on mobile */
+                padding-top: var(--nav-height);
             }
             .profile-header {
                 height: var(--header-initial-height);
-                padding: 30px 10px; /* Padding lebih besar */
+                padding: 30px 10px;
             }
             .profile-pic {
-                width: 140px; /* Diperbesar untuk HP */
-                height: 140px; /* Diperbesar untuk HP */
-                margin-bottom: 15px; /* Sesuaikan margin */
-                margin-top: 5px; /* Sesuaikan juga di media query */
+                width: 140px;
+                height: 140px;
+                margin-bottom: 15px;
+                margin-top: 5px;
             }
             .profile-name {
-                font-size: 2.8em; /* Diperbesar agar terlihat jelas di HP */
+                font-size: 2.8em;
             }
             .profile-handle {
-                font-size: 1.4em; /* Diperbesar agar terlihat jelas di HP */
+                font-size: 1.4em;
             }
             .top-nav {
                 height: var(--nav-height);
                 padding: 0 10px;
-                justify-content: center; /* Pusatkan menu di mobile */
+                justify-content: center;
             }
             .top-nav ul {
-                flex-wrap: wrap; /* Pastikan menu tetap melipat jika terlalu panjang */
+                flex-wrap: wrap;
                 justify-content: center;
             }
             .top-nav ul li {
@@ -529,40 +525,150 @@
                 margin-bottom: 5px;
             }
             .top-nav ul li a {
-                font-size: 1em; /* Ukuran font navigasi tetap nyaman */
+                font-size: 1em;
                 padding: 8px 12px;
             }
             .content-wrapper {
-                margin-top: 0; /* REMOVE NEGATIVE MARGIN */
-                padding: 15px;
+                margin-top: 0;
             }
         }
 
         @media (max-width: 480px) {
             :root {
-                --header-initial-height: 380px; /* Diperbesar untuk HP kecil */
+                --header-initial-height: 380px;
             }
             .profile-header {
                 height: var(--header-initial-height);
             }
             .profile-pic {
-                width: 120px; /* Diperbesar untuk HP kecil */
-                height: 120px; /* Diperbesar untuk HP kecil */
-                margin-top: 0; /* Sesuaikan juga di media query, mungkin tidak perlu margin di sini */
+                width: 120px;
+                height: 120px;
+                margin-top: 0;
             }
             .profile-name {
-                font-size: 2.4em; /* Diperbesar untuk HP kecil */
+                font-size: 2.4em;
             }
             .profile-handle {
-                font-size: 1.2em; /* Diperbesar untuk HP kecil */
+                font-size: 1.2em;
             }
             .top-nav ul li a {
-                font-size: 0.9em; /* Sesuaikan lagi untuk HP sangat kecil */
+                font-size: 0.9em;
                 padding: 6px 10px;
             }
             .content-wrapper {
-                margin-top: 0; /* REMOVE NEGATIVE MARGIN */
+                margin-top: 0;
             }
+        }
+
+        /* Cursor follower style */
+        #cursor-follower {
+            position: fixed;
+            pointer-events: none; /* Make sure it doesn't interfere with clicks */
+            transform: translate(-50%, -50%); /* Center the object on the cursor */
+            z-index: 9998; /* Below entrance overlay, above everything else */
+            display: none; /* Hidden initially, shown after entrance overlay fades */
+            transition: transform 0.05s ease-out; /* Default smooth follow transition */
+        }
+
+        /* Style untuk jejak serbuk hitam */
+        #cursor-trail {
+            position: fixed;
+            width: 10px; /* Lebar awal jejak (ujung memudar) */
+            height: 10px; /* Tinggi jejak (sama dengan lebar untuk lingkaran) */
+            background-color: rgba(0, 0, 0, 0.6); /* Warna serbuk hitam dengan sedikit transparansi */
+            border-radius: 50%; /* Membuat bentuk lingkaran di ujung awal */
+            pointer-events: none;
+            z-index: 9997; /* Di bawah cursor-follower, di atas konten */
+            transform: translate(-50%, -50%); /* Memusatkan jejak pada titik */
+            opacity: 0; /* Awalnya tidak terlihat */
+            /* Transisi untuk opacity, bukan width/height/border-radius karena ini akan diatur ulang oleh JS */
+            transition: opacity 0.2s ease-out; 
+            /* Animasi jejak memanjang dan memudar */
+            animation: trailFade 0.5s forwards; /* Animasi untuk memudar */
+        }
+
+        /* Keyframes untuk efek serbuk memanjang dan memudar */
+        @keyframes trailFade {
+            from {
+                width: 0px;
+                background-color: rgba(0, 0, 0, 0.6);
+            }
+            to {
+                width: 10px; /* Panjang jejak akhir (1cm) */
+                background-color: rgba(0, 0, 0, 0); /* Memudar menjadi transparan */
+            }
+        }
+
+        /* Idle Animations - Infinity Pattern */
+        #cursor-follower.idle-infinity {
+            animation: infinityPattern 4s ease-in-out infinite, shakeIdle 0.5s infinite alternate; 
+        }
+
+        @keyframes infinityPattern {
+            /* Mengelilingi kursor dengan pola infinity */
+            0% { transform: translate(-50%, -50%) translateX(0px) translateY(0px) rotate(0deg); }
+            12.5% { transform: translate(-50%, -50%) translateX(30px) translateY(-20px) rotate(45deg); }
+            25% { transform: translate(-50%, -50%) translateX(0px) translateY(-40px) rotate(90deg); }
+            37.5% { transform: translate(-50%, -50%) translateX(-30px) translateY(-20px) rotate(135deg); }
+            50% { transform: translate(-50%, -50%) translateX(0px) translateY(0px) rotate(180deg); }
+            62.5% { transform: translate(-50%, -50%) translateX(30px) translateY(20px) rotate(225deg); }
+            75% { transform: translate(-50%, -50%) translateX(0px) translateY(40px) rotate(270deg); }
+            87.5% { transform: translate(-50%, -50%) translateX(-30px) translateY(20px) rotate(315deg); }
+            100% { transform: translate(-50%, -50%) translateX(0px) translateY(0px) rotate(360deg); }
+        }
+
+        /* Shaking effect (2x lebih halus) for idle */
+        @keyframes shakeIdle {
+            0% { transform: translate(-50%, -50%) translateX(-0.5px) translateY(-0.5px); } 
+            25% { transform: translate(-50%, -50%) translateX(0.5px) translateY(0.5px); }
+            50% { transform: translate(-50%, -50%) translateX(-0.5px) translateY(0.5px); }
+            75% { transform: translate(-50%, -50%) translateX(0.5px) translateY(-0.5px); }
+            100% { transform: translate(-50%, -50%) translateX(-0.5px) translateY(-0.5px); }
+        }
+
+        /* Drastic shaking effect for click */
+        #cursor-follower.drastic-shake {
+            animation: drasticShake 0.1s infinite alternate !important; /* Drastic shaking speed */
+            transition: none !important; /* Override all other transitions/animations */
+        }
+
+        @keyframes drasticShake {
+            0% { transform: translate(-50%, -50%) translateX(-8px) translateY(-8px) rotate(-8deg); } /* Lebih drastis */
+            25% { transform: translate(-50%, -50%) translateX(8px) translateY(8px) rotate(8deg); }
+            50% { transform: translate(-50%, -50%) translateX(-8px) translateY(8px) rotate(-8deg); }
+            75% { transform: translate(-50%, -50%) translateX(8px) translateY(-8px) rotate(8deg); }
+            100% { transform: translate(-50%, -50%) translateX(-8px) translateY(-8px) rotate(-8deg); }
+        }
+
+        /* Sonar Effect - now a general class */
+        .sonar-effect {
+            position: fixed;
+            border: 2px solid rgba(0, 102, 204, 0.7);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 9997;
+            /* Animation applied dynamically by JS */
+        }
+        
+        /* Object moving around the page (circle animation) */
+        #cursor-follower.circling-page {
+            pointer-events: none;
+            animation: circlePage 4s linear forwards !important;
+            transition: none !important; /* Override normal follow transition */
+        }
+        
+        /* Ensure idle and drastic shake animations are removed when circling-page is active */
+        #cursor-follower.circling-page.idle-infinity { animation: none !important; }
+        #cursor-follower.circling-page.drastic-shake { animation: none !important; }
+
+        @keyframes circlePage {
+            0% { transform: translate(-50%, -50%) translateX(calc(50vw - 25px)) translateY(calc(50vh - 25px)) rotate(0deg); }
+            25% { transform: translate(-50%, -50%) translateX(calc(50vw - 25px)) translateY(calc(-50vh + 25px)) rotate(90deg); } 
+            50% { transform: translate(-50%, -50%) translateX(calc(-50vw + 25px)) translateY(calc(50vh - 25px)) rotate(180deg); } 
+            75% { transform: translate(-50%, -50%) translateX(calc(50vw - 25px)) translateY(calc(50vh - 25px)) rotate(270deg); } 
+            100% { transform: translate(-50%, -50%) translateX(calc(50vw - 25px)) translateY(calc(50vh - 25px)) rotate(360deg); }
         }
     </style>
 </head>
@@ -571,6 +677,10 @@
     <div id="entrance-overlay">
         <img src="logo.png" alt="Logo" id="entrance-logo">
     </div>
+
+    <div id="cursor-trail"></div> 
+    <img src="gifs1.gif" alt="Cursor Follower" id="cursor-follower" width="50px" height="50px"> 
+
     <header id="top" class="profile-header">
         <div class="profile-background-visual">
             <img src="gifs.gif" alt="Header Background" class="background-img">
@@ -723,7 +833,9 @@
             const backgroundOverlay = document.querySelector('.profile-background-visual .background-overlay');
             const profileHandle = document.querySelector('.profile-handle');
             const entranceOverlay = document.getElementById('entrance-overlay');
-            
+            const cursorFollower = document.getElementById('cursor-follower');
+            const cursorTrail = document.getElementById('cursor-trail'); // Dapatkan elemen trail
+
             const rotatingTexts = ["IT Support", "Web Developer", "Trainer", "Network Support & Troubleshooting"];
             let currentTextIndex = 0;
 
@@ -733,33 +845,30 @@
             const navHeight = getCssVar('--nav-height');
 
             const getScrollOffset = () => {
-                return navHeight; 
+                return navHeight;
             };
 
             const setActiveLink = () => {
                 let currentActiveSectionId = null;
                 const scrollY = window.pageYOffset;
-                const offsetThreshold = getScrollOffset(); 
+                const offsetThreshold = getScrollOffset();
 
-                // Check if we are still within the header section
-                const headerBottom = headerElement.offsetHeight - navHeight; // Adjust for nav height
+                const headerBottom = headerElement.offsetHeight - navHeight;
                 if (scrollY < headerBottom) {
                     currentActiveSectionId = 'top';
                 } else {
                     for (let i = sections.length - 1; i >= 0; i--) {
                         const section = sections[i];
-                        const sectionTop = section.getBoundingClientRect().top + scrollY; // Use scrollY
+                        const sectionTop = section.getBoundingClientRect().top + scrollY;
                         const sectionBottom = sectionTop + section.offsetHeight;
 
-                        // Check if the current scroll position is within the section,
-                        // accounting for the fixed navigation bar
                         if (scrollY + offsetThreshold >= sectionTop && scrollY + offsetThreshold < sectionBottom) {
                             currentActiveSectionId = section.id;
                             break;
                         }
                     }
                 }
-                
+
                 navLinks.forEach(link => {
                     link.classList.remove('active');
                     const linkTargetId = link.getAttribute('href').substring(1);
@@ -772,9 +881,7 @@
 
             const handleHeaderScroll = () => {
                 const scrollY = window.pageYOffset;
-                const headerInitialHeight = getCssVar('--header-initial-height');
-                
-                // Calculate opacity based on scroll
+
                 let opacityFactor = 1;
                 if (scrollY > fadeStartScroll) {
                     opacityFactor = 1 - (scrollY - fadeStartScroll) / (fadeEndScroll - fadeStartScroll);
@@ -799,17 +906,172 @@
             // Entrance animation logic
             setTimeout(() => {
                 entranceOverlay.classList.add('fade-out');
-                // Setelah transisi fade-out selesai, atur display menjadi none
-                entranceOverlay.addEventListener('transitionend', () => {
-                    entranceOverlay.style.display = 'none';
-                    document.body.style.overflow = 'auto'; // Mengembalikan scroll setelah entrance
-                }, { once: true }); // Menggunakan { once: true } agar event listener hanya dijalankan sekali
-            }, 2000); // Logo akan memudar setelah 2 detik (sesuaikan jika perlu)
+                setTimeout(() => {
+                    cursorFollower.style.display = 'block';
+                    cursorTrail.style.opacity = 1; // Tampilkan jejak setelah entrance
+                }, 1000);
+            }, 2000);
 
             window.addEventListener('scroll', () => {
                 setActiveLink();
                 handleHeaderScroll();
             });
+
+            // --- Cursor Follower Logic ---
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+            let currentX = 0;
+            let currentY = 0;
+            let isIdle = false;
+            let idleTimer;
+            const easeFactor = 0.08;
+            const zigzagAmplitude = 25;
+            const zigzagFrequency = 0.03; /* Perubahan di sini: untuk zigzag lebih panjang lagi */
+            const idleDelay = 500;
+            let isCircling = false;
+            let isDrasticShaking = false;
+
+            document.addEventListener('mousemove', (e) => {
+                if (isCircling || isDrasticShaking) {
+                    cursorTrail.classList.remove('active'); // Sembunyikan trail saat circling/drastic shake
+                    return;
+                }
+
+                targetX = e.clientX;
+                targetY = e.clientY;
+
+                isIdle = false;
+                cursorFollower.classList.remove('idle-infinity');
+                cursorFollower.style.animation = '';
+                
+                // Atur ulang properti style.animation dari cursor-trail untuk trigger ulang animasi trailFade
+                cursorTrail.style.animation = 'none';
+                void cursorTrail.offsetWidth; // Trigger reflow
+                cursorTrail.style.animation = 'trailFade 0.5s forwards';
+
+                clearTimeout(idleTimer);
+
+                idleTimer = setTimeout(() => {
+                    isIdle = true;
+                    cursorFollower.classList.add('idle-infinity');
+                }, idleDelay);
+            });
+
+            const animateFollower = () => {
+                if (isCircling || isDrasticShaking) {
+                    requestAnimationFrame(animateFollower);
+                    return;
+                }
+
+                // Update currentX/Y smoothly towards targetX/Y
+                currentX += (targetX - currentX) * easeFactor;
+                currentY += (targetY - currentY) * easeFactor;
+
+                // Update trail position (before zig-zag is applied to the follower)
+                cursorTrail.style.left = `${currentX}px`;
+                cursorTrail.style.top = `${currentY}px`;
+                cursorTrail.classList.add('active'); // Pastikan jejak aktif saat bergerak
+
+                if (!isIdle) {
+                    const zigzagX = Math.sin(performance.now() * zigzagFrequency) * zigzagAmplitude;
+                    const zigzagY = Math.cos(performance.now() * zigzagFrequency * 0.7) * (zigzagAmplitude * 0.5);
+
+                    cursorFollower.style.left = `${currentX + zigzagX}px`;
+                    cursorFollower.style.top = `${currentY + zigzagY}px`;
+                }
+                requestAnimationFrame(animateFollower);
+            };
+            animateFollower();
+            // --- End Cursor Follower Logic ---
+
+            // --- Sonar Effect on click anywhere on page ---
+            document.addEventListener('click', (e) => {
+                const sonarDiv = document.createElement('div');
+                sonarDiv.classList.add('sonar-effect');
+                
+                sonarDiv.style.left = `${e.clientX}px`;
+                sonarDiv.style.top = `${e.clientY}px`;
+                document.body.appendChild(sonarDiv);
+
+                const styleSheet = document.styleSheets[0];
+                const keyframesName = `clickSonar-${Date.now()}`; 
+                
+                const keyframesRule = `
+                    @keyframes ${keyframesName} {
+                        0% {
+                            opacity: 0.7;
+                            transform: translate(-50%, -50%) scale(0.1);
+                        }
+                        100% {
+                            opacity: 0;
+                            transform: translate(-50%, -50%) scale(2); 
+                        }
+                    }
+                `;
+                styleSheet.insertRule(keyframesRule, styleSheet.cssRules.length);
+
+                sonarDiv.style.animation = `${keyframesName} 0.6s ease-out forwards`;
+
+                sonarDiv.addEventListener('animationend', () => {
+                    sonarDiv.remove();
+                    for(let i = 0; i < styleSheet.cssRules.length; i++) {
+                        if(styleSheet.cssRules[i].name === keyframesName) {
+                            styleSheet.deleteRule(i);
+                            break;
+                        }
+                    }
+                });
+            });
+            // --- End Sonar Effect ---
+
+            // --- Click on object to trigger drastic shake and then circle page ---
+            cursorFollower.addEventListener('click', (e) => {
+                e.stopPropagation(); 
+
+                if (!isCircling && !isDrasticShaking) {
+                    isDrasticShaking = true;
+                    cursorFollower.classList.remove('idle-infinity'); 
+                    cursorFollower.style.animation = 'none';
+                    cursorTrail.classList.remove('active'); // Sembunyikan jejak saat drastic shake
+                    void cursorFollower.offsetWidth; 
+
+                    cursorFollower.classList.add('drastic-shake'); 
+
+                    setTimeout(() => {
+                        isDrasticShaking = false;
+                        cursorFollower.classList.remove('drastic-shake');
+                        
+                        isCircling = true;
+                        cursorFollower.classList.add('circling-page'); 
+                        cursorTrail.classList.remove('active'); // Sembunyikan jejak saat circling
+
+                        setTimeout(() => {
+                            cursorFollower.classList.remove('circling-page');
+                            cursorFollower.style.animation = ''; 
+                            isCircling = false;
+                            
+                            const currentRect = cursorFollower.getBoundingClientRect();
+                            currentX = currentRect.left + window.scrollX + currentRect.width / 2;
+                            currentY = currentRect.top + window.scrollY + currentRect.height / 2;
+
+                            isIdle = false;
+                            clearTimeout(idleTimer);
+                            idleTimer = setTimeout(() => {
+                                isIdle = true;
+                                cursorFollower.classList.add('idle-infinity'); 
+                            }, 500); 
+
+                            cursorTrail.classList.add('active'); // Tampilkan kembali jejak setelah semua animasi selesai
+
+                        }, 4000); 
+
+                    }, 3000); 
+                }
+            });
+            // --- End Click on object ---
+
 
             // Initial calls
             setActiveLink();
